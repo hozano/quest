@@ -1,0 +1,58 @@
+{% extends "private/cadastros.html" %}
+
+{% block content-box %}
+<h2>Disciplina: {{ disciplina.nome }}</h2>
+<a href="/disciplina/add/{{disciplina.id}}"> Matricular Alunos </a>
+
+<p><h4>Professor</h4>
+{{disciplina.professor}}
+</p>
+
+<p><h4>Alunos Matriculados</h4>
+<table width="100%">
+<tr>
+    <td align="center">
+    {% if disciplina.alunos.all %}
+        <table class="table">
+        {% for object in disciplina.alunos.all %}
+            {% if forloop.first %} 
+                <tr>
+                    {% for label, value in object.field_list %}
+                        <th>{{label}}</th>
+                    {% endfor %}
+            	</tr>
+            {% endif %}
+            <tr>
+                {% for label, value in object.field_list %}
+                    <td><a href="/aluno/detail/{{object.id}}">{{ value }}</a></td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    {% else %}
+        <td align="center">Nada a ser listado</td>
+    {% endif %}
+        </table>
+    </td>
+</tr>
+</table>
+
+<p><h4>Questionários</h4>
+<table width="100%">
+<tr>
+    <td align="center">
+    {% if disciplina.questionario_set.all %}
+        <table class="table">
+        {% for object in disciplina.questionario_set.all %}
+            <tr>
+               <td><a href="/questionario/detail/{{object.id}}">{{ object }}</a></td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <td align="center">Nada a ser listado</td>
+    {% endif %}
+        </table>
+    </td>
+</tr>
+</table>
+
+{% endblock %}

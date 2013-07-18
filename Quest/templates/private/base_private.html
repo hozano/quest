@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Quest?</title>
+<meta name="keywords" content="free css templates, education, school, college, university" />
+<meta name="description" content="Education template is for academic related websites" />
+<link href="/static/style.css" rel="stylesheet" type="text/css" />
+<link href="{{STATIC_URL}}css/blitzer/jquery-ui.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery-ui-1.8.4.custom.min.js"></script>
+
+{% block extrahead %} {% endblock %}
+</head>
+<body>
+<div id="login"> 
+<table width="100%">
+	<tr>
+		<td width="80%" align=right>
+			Bem vindo(a) {{user.get_full_name}}</br> <a href="/logout">Sair</a><td>
+	</tr>
+</table></div>
+ 
+{% block menu %}
+
+<div id="templatemo_menu_wrapper">
+    <div id="templatemo_menu">
+        
+        <ul>
+            <li><a href="/" class="current">Home</a></li>
+            <li><a href="/submissoes">Submissões</a></li>
+            <li><a href="/questionarios">Questionários</a></li>
+           
+            {% if perms.core.professor %}
+            	<li><a href="/questoes">Questões</a></li>
+            	<li><a href="/cadastros">Cadastros</a></li>
+            {% endif %}
+            
+            <li><a href="/logout">Sair</a></li>
+        </ul>    	
+    
+    </div> <!-- end of templatemo_menu -->
+</div>
+
+{% endblock %}
+
+
+{% block content %}
+
+{% endblock %}
+
+<div id="templatemo_footer_wrapper">
+
+    <div id="templatemo_footer">
+    
+                Copyright © 2048 <a href="http://lamp.aracomp.com.br">Laboratório de Análise, Modelagem e Programação </a> | 
+                Designed by <a href="http://facebook-templates.net/" target="_parent">Facebook FBML Templates</a> | 
+                Validate <a href="http://validator.w3.org/check?uri=referer">XHTML</a> &amp; <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+    </div>
+    
+</div>
+</body>
+</html>

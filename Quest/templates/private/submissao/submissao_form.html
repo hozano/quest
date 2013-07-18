@@ -1,0 +1,33 @@
+{% extends "private/submissao/base_submissao.html" %}
+
+{% block extrahead %}
+	{{ form.media }}
+	<script type="text/javascript" src="{{ STATIC_URL }}js/tiny_mce/tiny_mce.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/tiny_mce/tinymce_textareas.js"></script>
+{% endblock %}
+
+{% block content-submissao %}
+
+<h2>Questionário: {{questionario.nome}}</h2>
+
+<p>
+Início: {{questionario.hora_inicio}}<br/>
+Fim: {{questionario.hora_fim}}
+</p><br/>
+
+
+<form name='generic_form' action="" enctype="multipart/form-data" method="post"> {% csrf_token %}
+
+<p>
+{% for form in questoes %}
+	<p>
+	<h2> Questão {{forloop.counter}}</h2><h3>{{form.questao.enunciado|safe}}</h3>
+	{% if form.errors %} Você tem que indicar uma resposta. <br/>{% endif %}
+		{{ form }}
+	</p>
+{% endfor %}
+</p>
+
+<p><br/><input type='submit' value='Enviar'/></p>
+</form>
+{% endblock %}

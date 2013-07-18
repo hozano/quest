@@ -1,0 +1,76 @@
+{% extends "private/base_private.html" %}
+{% block menu %}
+
+<div id="templatemo_menu_wrapper">
+    <div id="templatemo_menu">
+        
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/submissoes">Submissões</a></li>
+            <li><a href="/questionarios" class="current">Questionários</a></li>
+            {% if perms.core.professor %}
+            	<li><a href="/questoes">Questões</a></li>
+            	<li><a href="/cadastros">Cadastros</a></li>
+            {% endif %}
+            <li><a href="/logout">Sair</a></li>
+        </ul>    	
+    
+    </div> <!-- end of templatemo_menu -->
+    
+</div>
+
+{% endblock %}
+{% block content %}
+
+<div id="templatemo_content_wrapper">
+
+	<div id="templatemo_sidebar">
+		{% if perms.core.professor %}
+			<div class="sidebar_box">
+				
+	            <h2>Questionários</h2>
+	            
+	            <p><a href="/questionario/create">Criar Questionário</a></p>
+	            
+	            <div class="cleaner"></div>
+	        
+	        </div><div class="sidebar_box_bottom"></div>
+      	{% endif %}
+    	<div class="sidebar_box">
+        	
+            <h2>Últimas</h2>
+            
+            <div class="news_box">
+                <a href="#">Fusce sit amet nunc lectus, at pretium augue. Pellentesque tortor felis.</a>
+                <p class="post_info">Posted by <a href="#">Admin</a> on <span>April 30, 2048</span></p>
+            </div>
+            
+            <div class="news_box">
+                <a href="#">Integer imperdiet, justo ut venenatis vehicula, magna mi placerat felis.</a>
+                <p class="post_info">Posted by <a href="#">Admin</a> on <span>April 22, 2048</span></p>
+            </div>
+            
+            <div class="news_box">
+                <a href="#">Sed justo dolor, convallis at, vestibulum vitae, elementum eu, pede.</a>
+                <p class="post_info">Posted by <a href="#">Admin</a> on <span>April 14, 2048</span></p>
+            </div>
+        
+        </div><div class="sidebar_box_bottom"></div>
+        
+        
+    
+    </div> <!-- end of sidebar -->
+
+	<div id="templatemo_content">
+    	<div class="content_box">
+    	
+			{% block content-questionario %}{% endblock %}
+			
+		 </div><div class="content_box_bottom"></div>
+    </div> <!-- end of content -->
+
+    <div class="cleaner"></div>
+
+</div>
+
+{% endblock %}

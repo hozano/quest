@@ -1,0 +1,59 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+
+<div id="templatemo_content_wrapper">
+
+	<div id="templatemo_sidebar">
+		
+    	<div class="sidebar_box">
+        	
+            <h2>Não tem Conta?</h2>
+            
+            <div class="news_box">
+                <p style="color:black">Entre em contato com o Professor Mário Hozano e a equipe do <a href="http://lamp.aracomp.com.br">LAMP</a>
+                e obtenha as informações para acessar o <i>Quest?</i></p>
+            </div>
+            
+            <h2>Perdeu a Senha?</h2>
+            
+            <div class="news_box">
+                <p style="color:black">Envie um e-mail para o suporte e obtenha uma nova senha de acesso.</p>
+            </div>
+            
+        </div><div class="sidebar_box_bottom"></div>
+        
+    </div> <!-- end of sidebar -->
+    
+    <div id="templatemo_content">
+    
+    	<div class="content_box">
+        
+        	<h2>Indique seus dados de acesso</h2>
+            <br/>
+            <form action="/accounts/login/" method="post">{% csrf_token %}
+            	<input type="hidden" name="next" value="/home"/>
+            	<table width="100%">
+            		<tr><td width="35%" style="text-align:right">Usuário:</td><td>{{form.username}}</td></tr>
+            		<tr><td width="" style="text-align:right"></td><td>{% for error in form.username.errors%}{{error}}{% endfor %}</td></tr>
+        			<tr style="height:8px"><td style="text-align:right"></td><td></tr>
+            		<tr><td style="text-align:right">Senha:</td><td>{{form.password}}</tr>
+        			<tr><td width="" style="text-align:right"></td><td>{% for error in form.password.errors%}{{error}}{% endfor %}</td></tr>
+        			<tr style="height:8px"><td style="text-align:right"></td><td></tr>
+            		<tr ><td></td><td><input type='submit' value="Entrar"/></td></tr>
+            	</table>
+        	</form>
+            
+          <div class="cleaner_h20"></div>
+            
+                    
+        	<div class="cleaner"></div>
+        </div><div class="content_box_bottom"></div>
+        
+    </div> <!-- end of content -->
+    
+    <div class="cleaner"></div>
+
+</div>
+
+{% endblock %}

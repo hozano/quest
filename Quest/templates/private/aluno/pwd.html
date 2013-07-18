@@ -1,0 +1,21 @@
+{% extends "private/aluno/home.html" %}
+
+{% block content_home %}
+<h2>Atualizar Aluno</h2>
+
+<form name='generic_form' action="" enctype="multipart/form-data" method="post"> {% csrf_token %}
+{% for hidden in form.hidden_fields %} 	{{ hidden }} {% endfor %}
+
+	{% for field in form.visible_fields %}
+		    {{ field.label_tag }}{% if field.is_required %}*{% endif %} <br/>
+			{{ field }} <br/>
+			{% if field.errors %}{{ field.errors }}{% endif %}
+			{{ field.help_text }}<br/>
+    {% endfor %}
+    <p>
+        <input type="submit" value="Salvar" />
+    </p>
+</form>
+
+{% endblock %}
+

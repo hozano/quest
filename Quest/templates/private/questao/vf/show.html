@@ -1,0 +1,27 @@
+{% extends "private/questao/base_show_questao.html" %}
+
+{% block content-questao %}
+<h2>Questão: {{questao.nome}}</h2>
+
+<p><h4>Tipo</h4>
+Questão {{questao.get_tipo}}
+</p>
+
+<p><h4>Enunciado</h4>
+{{questao.enunciado|safe}}
+</p>
+
+<p><h4>Alternativas</h4>
+	<ul>
+	{% for alternativa in questao.alternativavfquestao_set.all %}
+		<li>({{alternativa.valor}}) {{alternativa.alternativa}}</li>
+	{% endfor %}
+	</ul>
+</p>
+
+<p><h4>Tags</h4>
+{% if questao.get_tags_as_string %}{{questao.get_tags_as_string}}{% else %} <i>Nenhuma tag associada.</i> {% endif %}
+</p>
+
+
+{% endblock %}

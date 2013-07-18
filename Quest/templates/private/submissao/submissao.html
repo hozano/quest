@@ -1,0 +1,69 @@
+{% extends "private/submissao/base_submissao.html" %}
+
+{% block menu %}
+
+<div id="templatemo_menu_wrapper">
+    <div id="templatemo_menu">
+        
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/submissoes" class="current">Submissões</a></li>
+            <li><a href="/questionarios">Questionários</a></li>
+           
+            {% if perms.core.professor %}
+            	<li><a href="/questoes">Questões</a></li>
+            	<li><a href="/cadastros">Cadastros</a></li>
+            {% endif %}
+            
+            <li><a href="/logout">Sair</a></li>
+        </ul>    	
+    
+    </div> <!-- end of templatemo_menu -->
+</div>
+
+{% endblock %}
+
+{% block content %}
+<div id="templatemo_content_wrapper">
+<div id="templatemo_content_full">
+	<div class="content_box_full">
+		{% block content-box %}
+			<h2>Submissão para {{submissao.questionario}}</h2>
+			
+			<p><h4>Quando?</h4>
+			{{submissao.data_hora}}
+			</p>
+			
+			<p><h4>Quem?</h4>
+			{{ submissao.aluno }}
+			</p>
+			
+			<p><h4>Respostas</h4>
+				{% for resposta in submissao.get_respostas %}
+					<h3> {{ resposta.questao.enunciado|safe }} </h3>
+						<p>Resposta dada:</p>  <p>{{ resposta|safe }}</p>
+						
+						{% if perms.core.professor %}
+							<br>
+							<p>Resposta esperada: </p> <p>{{ resposta.questao.get_resposta|safe }}</p>
+						{% endif %}
+						
+					<br>
+				{% endfor %}
+			</p>
+			<p>
+			{% if perms.core.professor %}
+				nota: {{ submissao.nota }} </br>
+				<a href='/submissoes/pontuar/{{submissao.id}}'>Avaliar</a> 
+			{% endif %}
+			</p>
+			<p align=right><a href="/submissoes"> Voltar </a></p>
+		{% endblock %}
+		
+		 </div><div class="content_box_bottom_full"></div>
+    </div> <!-- end of content -->
+
+    <div class="cleaner"></div>
+
+</div>
+{% endblock %}

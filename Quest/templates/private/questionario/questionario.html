@@ -1,0 +1,40 @@
+{% extends "private/questionario/base_questionario.html" %}
+
+{% block content-questionario %}
+<h2>Questionário: {{questionario.nome}}</h2>
+
+<p><h4>Início</h4>
+{{questionario.hora_inicio}}
+</p>
+
+<p><h4>Fim</h4>
+{{questionario.hora_fim}}
+</p>
+
+<p><h4>Tags das questões envolvidas</h4>
+{{questionario.get_tags_as_string}}
+</p>
+
+<p><h4>Questões</h4>
+	<ul>
+	{% for questao in questionario.get_questoes %}
+		<li><a href='/questao/detail/{{questao.uid}}/{{questao.id}}'>{{questao.nome}} ({{questao.get_tipo}}) </a></li>
+	{% endfor %}
+	</ul>
+</p>
+
+<p>
+	{% if perms.core.professor %}
+		<a href='/questionario/aplicar/{{questionario.id}}'>Aplicar Questionário</a> 
+	{% else %}
+		{% if hora > questionario.hora_fim %}
+			<h3> <font color="red">Data limite de submissão atingida</font> </h3> 
+		{% else %}
+			<a href='/questionario/submeter/{{questionario.id}}'>Submeter Questionário</a>
+		{% endif %}		 
+	{% endif %}
+</p>
+<p>
+<a href="/questionarios"><p align="right">Voltar</p></a>
+</p>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "private/cadastros.html" %}
+
+{% block extrahead %}
+	{{ form.media }}
+	<script type="text/javascript" src="{{ STATIC_URL }}js/tiny_mce/tiny_mce.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/tiny_mce/tinymce_textareas.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.formset.min.js"></script>
+{% endblock %}
+
+{% block content-box %}
+<h2>Cadastrar Alunos</h2>
+<form name='generic_form' action="" enctype="multipart/form-data" method="post"> {% csrf_token %}
+
+
+<p>Escolha a disciplina ao qual desejas vincular os alunos</p>
+	{% for disciplina in professor.get_disciplinas%}
+		<p><input type="checkbox" name="disciplinas" value={{disciplina.id}}>{{disciplina.nome}}</p> 
+	{% endfor %}
+</br>
+<p>
+Em cada linha do arquivo deve conter as seguintes informações dos alunos separadas por espaço em branco:</br>
+númeração, nome completo, matricula. </br></br>
+</p>
+
+	{% for hidden in form.hidden_fields %} 	{{ hidden }} {% endfor %}
+
+	{% for field in form.visible_fields %}
+		    {{ field.label_tag }}{% if field.is_required %}*{% endif %} <br/>
+			{{ field|safe }} <br/>
+			{% if field.errors %}{{ field.errors }}{% endif %}
+			{{ field.help_text }}<br/>
+    {% endfor %}
+    
+    <p>
+        <input type="submit" value="Enviar" />
+    </p>
+</form>
+
+{% endblock %}

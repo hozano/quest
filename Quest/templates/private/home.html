@@ -1,0 +1,107 @@
+{% extends "private/base_private.html" %}
+
+{% block content %}
+
+<div id="templatemo_content_wrapper">
+
+	<div id="templatemo_sidebar">
+		
+		<div class="sidebar_box">
+			
+            <h2>Bem vindo(a)</h2>
+            	Você está logado como<br/>
+            	{{user.get_full_name}}<br/>
+            	<a href="/mudar_pwd">Modificar Senha</a> <br/>
+				<a href="/logout">Sair</a>   
+				        	
+            
+            <div class="cleaner"></div>
+        
+        </div><div class="sidebar_box_bottom"></div>
+    
+    	<div class="sidebar_box">
+        	
+            <h2>Últimas Notícias</h2>
+            
+            <div class="news_box">
+                <a href="#">Fusce sit amet nunc lectus, at pretium augue. Pellentesque tortor felis.</a>
+                <p class="post_info">Posted by <a href="#">Admin</a> on <span>April 30, 2048</span></p>
+            </div>
+            
+            <div class="news_box">
+                <a href="#">Integer imperdiet, justo ut venenatis vehicula, magna mi placerat felis.</a>
+                <p class="post_info">Posted by <a href="#">Admin</a> on <span>April 22, 2048</span></p>
+            </div>
+            
+            <div class="news_box">
+                <a href="#">Sed justo dolor, convallis at, vestibulum vitae, elementum eu, pede.</a>
+                <p class="post_info">Posted by <a href="#">Admin</a> on <span>April 14, 2048</span></p>
+            </div>
+        
+        </div><div class="sidebar_box_bottom"></div>
+        
+    </div> <!-- end of sidebar -->
+    
+    <div id="templatemo_content">
+    
+    	<div class="content_box">
+        
+        	<h2>Bem vindo ao Quest?</h2>
+            
+            <p> Durante esta disciplina tivemos diversos problemas com as ferramentas 
+            para apoiar a avaliação do curso de programação. Os problemas comuns 
+            do início de utilização do Huxley, a pouca flexibilidade do Google Forms 
+            e a baixa qualidade no provimento de Internet no Campus Arapiraca 
+            prejudicaram a condução da disciplina. Para isso, resolvemos criar o Quest!, uma ferramenta própria
+            para ajudar na avaliação do curso, trazendo benefícios como: </p>
+            
+          <div class="cleaner_h20"></div>
+            
+            <div class="image_fl">
+	            <img src="{{STATIC_URL}}images/templatemo_images01.jpg" alt="image" />
+            </div>
+            
+            <div class="section_w250 float_r">
+            
+            	<ul class="list_01">
+                   	  <li>Não necessita conexão com a Internet </li>
+                      <li>Rapidez na conexão local </li>
+                      <li>Autonomia para criação de Questões </li>
+                      <li>Suporte a diversos tipos de Questões </li>
+                      <li>Maior facilidade de customização </li>
+                      <li>Aplicação em diversos domínios </li>
+                      <li>Mais um produto do Campus Arapiraca </li>
+              </ul>
+            
+            </div>
+        
+        	<div class="cleaner"></div>
+        </div><div class="content_box_bottom"></div>
+        
+        <div class="content_box">
+        
+        	<h2>Outros Sistemas</h2>
+            
+            <div class="section_w250 float_l">
+				<h3>Huxley</h3>            
+				<p>Apesar dos problemas apresentados, o huxley ainda será utilizado na disciplina.</p>
+            
+            </div>  
+            
+            <div class="section_w250 float_r">
+				<h3>Google Forms</h3>            
+				<p>Além do Huxley, estamos investigando as melhores configurações entre Google Sites e Google Forms para avaliações teóricas.</p>
+            
+            </div>            
+        
+        	<div class="cleaner"></div>
+
+        </div><div class="content_box_bottom"></div>
+    	
+    </div> <!-- end of content -->
+    
+    <div class="cleaner"></div>
+
+</div>
+
+{% endblock %}

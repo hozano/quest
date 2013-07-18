@@ -1,0 +1,21 @@
+{% extends "private/base_private.html" %}
+
+{% block content %}
+
+<div id="templatemo_content_wrapper">
+
+
+	<div id="templatemo_content_full">
+    	<div class="content_box_full">
+	    	{% block content-box %}
+	    		<center><h2> {{msg}}</h2></center>
+				<p> <a href={{link}}> Voltar </a></p>
+			{% endblock %}
+		 </div><div class="content_box_bottom_full"></div>
+    </div> <!-- end of content -->
+
+    <div class="cleaner"></div>
+
+</div>
+
+{% endblock %}

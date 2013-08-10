@@ -1,57 +1,92 @@
 {% extends "private/cadastros.html" %}
 
-{% block content-box %}
-<h2>Lista de Professores</h2>
-            
-<table width="100%">
-<tr>
-    <td align="center">
-    {% if object_list %}
-        <table class="table">
-        {% for object in object_list %}
-            {% if forloop.first %} 
-                <tr>
-                    {% for label, value in object.field_list %}
-                        <th>{{label}}</th>
-                    {% endfor %}
-            	</tr>
-            {% endif %}
-            <tr>
-                {% for label, value in object.field_list %}
-                    <td><a href="/professor/detail/{{object.id}}">{{ value }}</a></td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-    {% else %}
-        <td align="center">Nada a ser listado</td>
-    {% endif %}
-    {% if paginator %}
-    	<tr>
-	    	<td colspan=20>
-	    		{% if paginator.num_pages and object_list%}
-					Exibindo Página: {{ page_obj.number }} / {{ paginator.num_pages }}<br>
-				{% endif%}
-				
-				{% if page_obj.has_previous %}
-					<a href="/{{link}}/page{{ page_obj.previous_page_number }}">Anterior</a>
-				{% endif %}
-				
-				{% if paginator.num_pages and object_list %}
-					{% for integer in page_range %}
-							<a href="/{{link}}/page{{ integer }}">{{ integer }}</a>
-					{% endfor %}
-				{% endif%}
-				
-				{% if page_obj.has_next %}
-					<a href="/{{link}}/page{{ page_obj.next_page_number }}">Próxima</a>
-				{% endif %}
-	    	</td>
-	    </tr>
-     	{% endif %}
-        </table>
-    </td>
-</tr>
-</table>
-    
+{% block navigator %} {% endblock %}
+{% block header-button %}
 
-{% endblock %}
+<li class="dropdown dropdown-big"><a href="#cad_prof" data-toggle="modal"> 
+<i class="icon-plus-sign"></i> Cadastrar</a> 
+
+<!-- Modal -->
+	<div id="cad_prof" class="modal hide fade" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Cadastrar Professor</h3>
+		</div>
+		<form name='generic_form' action="/professor/create" enctype="multipart/form-data" method="post"> {% csrf_token %}
+			<div class="modal-body">
+				{{ form }}
+			</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
+			<button type="submit" class="btn btn-primary">Cadastrar</button>
+		</div>
+		</form>
+	</div> 
+	
+{% endblock %} 
+
+{% block header-data %} {% endblock %} 
+
+{% block content-title %} Professores {% endblock %}
+
+{% block content-bread %}
+
+<a href="/"><i class="icon-home"></i> Home</a>
+<!-- Divider -->
+<span class="divider">/</span>
+<a href="#" class="bread-current">Professores</a>
+
+{% endblock %} 
+
+
+{% block main-content %}
+<div class="row-fluid">
+		<div class="span8">
+			<!-- User widget -->
+			<div class="widget">
+				<div class="widget-head">
+					<div class="pull-left">Professores</div>
+					<div class="widget-icons pull-right">
+						<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="widget-content">
+					<div class="padd">
+
+						{% for professor in object_list %}
+						<div class="user">
+							<div class="user-pic">
+								<!-- User pic -->
+								<a href="#"><img
+									src="{{STATIC_URL}}macadmin/img/user-big.jpg"
+									alt="{{ professor }}" /></a>
+							</div>
+
+							<div class="user-details">
+								<h5>{{ professor }}</h5>
+
+								<p>{{ professor.about }}</p>
+
+								<a href="/professor/detail/{{professor.id}}"
+									class="btn btn-info btn-mini"><i class="icon-user"></i> Ver
+									Perfil</a> <a href="mailto:{{professor.email}}"
+									class="btn btn-mini"><i class="icon-envelope-alt"></i>
+									Enviar Mensagem</a>
+
+							</div>
+							<div class="clearfix"></div>
+						</div>
+
+						<hr />
+						{% endfor %}
+
+					</div>
+					<div class="widget-foot"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+ {% endblock %}

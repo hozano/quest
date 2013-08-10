@@ -1,18 +1,98 @@
 {% extends "private/cadastros.html" %}
 
-{% block content-box %}
-<h2>Professor: {{ professor }}</h2>
+{% block content-title %} 
+<img src="{{STATIC_URL}}macadmin/img/user.jpg"> Professor: {{ professor }}
 
-<p><h4>email</h4>
-{{ professor.email }}
-</p>
+ {% endblock %}
+ 
+ {% block content-bread %}
 
-<p><h4>Questões Criadas</h4>
-{% if professor.get_questoes_criadas %}
-	{% for questao in professor.get_questoes_criadas %}
-		<a href="/questao/detail/{{questao.uid}}/{{ questao.id }}/"> {{questao}} </a> </br>
-	{% endfor %}
-{% else %} <i>Nenhuma questão criada.</i> {% endif %}
-</p>
+<a href="/"><i class="icon-home"></i> Home</a>
+<!-- Divider -->
+<span class="divider">/</span>
+<a href="#" class="bread-current">Professores</a>
+
+{% endblock %} 
+
+{% block main-content %}
+
+<div class="row-fluid">
+
+	<!--  Questões -->
+	<div class="span6">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left">Questões Criadas</div>
+				<div class="widget-icons pull-right">
+					<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="widget-content">
+			{% if professor.get_questoes_criadas %} 
+				<table class="table table-striped table-bordered table-hover">
+                      <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th>Tipo</th>
+                          <th>Nivel</th>
+                          <th>Tag</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {% for questao in professor.get_questoes_criadas %} 
+                      <a href="/questao/detail/{{questao.uid}}/{{ questao.id }}/">
+						{{questao}} 
+                        <tr>
+                          <td>{{ questao }}</td>
+                          <td>{{ questao.modulo.tipo_string }}</td>
+                          <td>{{ questao.nivel_estatico }}</td>
+                          <td><span class="label label-info"> {{ questao.get_tags_as_string }} </span></td>
+                        </tr> </a>
+                        </tbody>
+                       </table>
+					
+					{% endfor %} 
+					{% else %} 
+					<div class="padd">
+						<i>Nenhuma questão criada.</i>
+					</div>
+					
+					<div class="clearfix"></div>
+					<hr />
+					{% endif %}
+				</div>
+			<div class="widget-foot">Questões criadas pelo professor {{ professor }}</div>
+		</div>
+	</div>
+	
+	<!--  Disciplinas -->
+	
+	<div class="span6">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left">Grupos</div>
+				<div class="widget-icons pull-right">
+					<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+			<div class="widget-content">
+				{% if professor.get_disciplinas %}
+				
+				{% else %}
+					<div class="padd">
+						Nenhuma Grupo registrado.
+					</div>
+					<div class="clearfix"></div>
+					<hr />
+				{% endif %}
+			</div>
+			<div class="widget-foot">Grupos do Professor {{ professor }}</div>
+		</div>
+	</div>
+	
+</div>
 
 {% endblock %}

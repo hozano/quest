@@ -7,7 +7,7 @@ from quest.questao.forms import QuestionarioForm, AplicarQuestionarioForm,\
     SubmissaoForm, make_forms_from_questionario
 from django.db import transaction
 from django.http import HttpResponseRedirect, HttpResponse
-from quest.core.models import Disciplina, Aluno
+from quest.core.models import Grupo, Aluno
 from django.forms.formsets import formset_factory, BaseFormSet
 
 from datetime import datetime
@@ -135,14 +135,14 @@ def show_questionario(request, pk):
 @permission_required("core.professor", login_url="/home")
 def aplicar_questionario(request, pk):
     questionario = Questionario.objects.get(pk = pk)
-    disciplinas = Disciplina.objects.filter(professor = request.user.professor)
+    disciplinas = Grupo.objects.filter(professor = request.user.professor)
     if request.method == 'POST':
         form = AplicarQuestionarioForm(disciplinas, request.POST)
         if form.is_valid():
             with transaction.commit_on_success():
                 disciplinas = form.cleaned_data["disciplinas"]
                 for disciplina_id in disciplinas:
-                    disciplina = Disciplina.objects.get(id = disciplina_id)
+                    disciplina = Grupo.objects.get(id = disciplina_id)
                     questionario.disciplinas.add(disciplina)
                 print "disciplinas no questionario ", questionario.disciplinas.all()
                 questionario.save()
@@ -199,13 +199,13 @@ def listar_submissoes(request, disciplina_id=None, aluno_id=None, questionario_i
     
     if not disciplina_id:
         if hasperm:
-            disciplinas = Disciplina.objects.filter(professor = request.user.professor)
+            disciplinas = Grupo.objects.filter(professor = request.user.professor)
         else:
-            disciplinas = Disciplina.objects.filter(alunos = request.user.aluno)
+            disciplinas = Grupo.objects.filter(alunos = request.user.aluno)
         return render_to_response("private/submissao/list.html", {"disciplinas":disciplinas}, 
                                   context_instance = RequestContext(request))
     else:
-        disciplina = Disciplina.objects.get(pk = disciplina_id)
+        disciplina = Grupo.objects.get(pk = disciplina_id)
         if aluno_id:
             if questionario_id:
                 aluno = Aluno.objects.get(id = aluno_id)

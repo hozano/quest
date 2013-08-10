@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 class Professor(models.Model):
     user = models.OneToOneField(User)
+    about = models.TextField()
         
     def __unicode__(self):
         return self.user.get_full_name()  
@@ -18,12 +19,8 @@ class Professor(models.Model):
             items += list(eval('self.user.%s.all()' % cl))
         return items
     
-    def get_disciplinas(self):
-        disc = []
-        for disciplina in Disciplina.objects.all():
-            if disciplina.professor == self.user.professor:
-                disc.append(disciplina)
-        return disc
+    def get_grupos(self):
+        return Grupo.objects.filter(professor = self)
     
     @property 
     def email(self):
@@ -47,7 +44,7 @@ class Aluno(models.Model):
         return [('Matricula', self.matricula), ('Nome', self.nome), ('Email', self.user.email)]
     
 
-class Disciplina(models.Model):
+class Grupo(models.Model):
     alunos = models.ManyToManyField(Aluno)
     codigo = models.CharField(max_length = 10)
     nome = models.CharField(max_length = 30)

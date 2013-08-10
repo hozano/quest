@@ -4,9 +4,9 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db import transaction
 from django.db.models import Q
-from quest.core.models import Professor, Aluno, Disciplina
-from quest.core.forms import ProfessorForm, AlunoForm, DisciplinaForm,\
-    DisciplinaAlunosForm, AlunosForm
+from quest.core.models import Professor, Aluno, Grupo
+from quest.core.forms import ProfessorForm, AlunoForm, GrupoForm,\
+    GrupoAddAlunosForm, AlunosForm
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Permission, User
 from django.utils import simplejson
@@ -33,7 +33,7 @@ def home(request):
     @return: Página principal
     @rtype: HttpResponse
     '''
-    return render_to_response('private/home.html', context_instance=RequestContext(request))
+    return render_to_response('private/index.html', context_instance=RequestContext(request))
 
 @permission_required("core.professor", login_url="/home")
 def cadastro(request):
@@ -48,6 +48,7 @@ def cadastro(request):
 
 @permission_required("core.professor", login_url="/home")
 def criar_professor(request):
+    print "criando professor"
     if request.method == 'POST':
         form = ProfessorForm(request.POST)
         if form.is_valid():
@@ -56,19 +57,18 @@ def criar_professor(request):
                 user.user_permissions.add(Permission.objects.get(codename = "professor"))
                 professor = Professor(user = user)
                 professor.save()
+                print "professor salvo"
                 return HttpResponseRedirect('/professor')
-    else:
-        form = ProfessorForm()
-        
-    return render_to_response('private/professor/professor_form.html', {'form':form,}, 
-                              context_instance=RequestContext(request))
+    print "redirecionando"
+    return HttpResponseRedirect('/professor')
     
 @permission_required("core.professor", login_url="/home")
-def listar_professor(request):
+def professor(request):
     objects_list = Professor.objects.all()
-    return render_to_response('/professor', {'object_list': objects_list,}, 
-                              context_instance=RequestContext(request))
+    form = ProfessorForm()
+    return render_to_response('private/professor/list.html', {'object_list': objects_list, 'form':form}, context_instance=RequestContext(request))
     
+
 @permission_required("core.professor", login_url="/home")
 def criar_aluno(request):
     if request.method == 'POST':
@@ -79,11 +79,7 @@ def criar_aluno(request):
                 aluno = Aluno(matricula = form.cleaned_data['matricula'] ,user = user)
                 aluno.save()
                 return HttpResponseRedirect('/aluno')
-            return HttpResponse('Deu Erro.')
-    else:
-        form = AlunoForm()
-    return render_to_response('private/aluno/aluno_form.html', {'form':form,}, 
-                              context_instance=RequestContext(request))
+    return HttpResponseRedirect('/aluno')
 
 def get_alunos(request):
     alunos = Aluno.objects.all()
@@ -115,7 +111,7 @@ def get_alunos(request):
 # Criando através de um txt com o seguinte modelo
 # NúmeroQualquer Código Matrícula
 # 99 ALLYUN MLGCIO KORFMREIA 136294648
-def handle_criar_alunos_file(f, disciplinas):
+def handle_criar_alunos_file(f, grupos):
     result = {"cadastrados": [], "erro": [] }
     count = 0
 
@@ -138,22 +134,22 @@ def handle_criar_alunos_file(f, disciplinas):
         query = Aluno.objects.filter(matricula = matricula)
         if len(query):
             result['erro'].append((username, matricula, "aluno com essa matricula já cadastrado"))
-            for disciplina_pk in disciplinas:
-                disciplina = Disciplina.objects.get(pk=disciplina_pk)
-                disciplina.alunos.add(Aluno.objects.get(pk=query[0].id))
-                disciplina.alunos
-            disciplina.save()
+            for grupoId in grupos:
+                grupo = Grupo.objects.get(pk=grupoId)
+                grupo.alunos.add(Aluno.objects.get(pk=query[0].id))
+                grupo.alunos
+            grupo.save()
             continue
         
         query  = User.objects.filter(Q(username = username))
         if len(query):
             result['erro'].append((username, matricula, "aluno com esse usuário já cadastrado"))
             aluno = Aluno(matricula=matricula, user=query[0])
-            for disciplina_pk in disciplinas:
-                disciplina = Disciplina.objects.get(pk=disciplina_pk)
-                disciplina.alunos.add(aluno)
-                disciplina.alunos
-            disciplina.save()
+            for grupoId in grupos:
+                grupo = Grupo.objects.get(pk=grupoId)
+                grupo.alunos.add(aluno)
+                grupo.alunos
+            grupo.save()
             aluno.save()
             continue
         
@@ -162,11 +158,11 @@ def handle_criar_alunos_file(f, disciplinas):
         user.save()
         aluno = Aluno(matricula=matricula, user=user)
 
-        for disciplina_pk in disciplinas:
-            disciplina = Disciplina.objects.filter(pk=disciplina_pk)
-            disciplina.alunos.add(aluno)
-            disciplina.alunos
-        disciplina.save()
+        for grupoId in grupos:
+            grupo = Grupo.objects.filter(pk=grupoId)
+            grupo.alunos.add(aluno)
+            grupo.alunos
+        grupo.save()
         
         aluno.save()
         result['cadastrados'].append(aluno)
@@ -178,8 +174,8 @@ def criar_alunos(request):
         form = AlunosForm(request.POST, request.FILES)
         if form.is_valid():
             alunos = request.FILES['arquivo']      
-            disciplinas = request.POST.getlist('disciplinas')
-            result = handle_criar_alunos_file(alunos,disciplinas)
+            grupos = request.POST.getlist('grupos')
+            result = handle_criar_alunos_file(alunos,grupos)
             return render_to_response('private/aluno/resultado.html', {'cadastrados' : result['cadastrados'], 'erro':result['erro']},
                               context_instance=RequestContext(request))
     else:
@@ -188,45 +184,46 @@ def criar_alunos(request):
                               context_instance=RequestContext(request))
 
 @permission_required("core.professor", login_url="/home")
-def listar_aluno(request):
+def aluno(request):
     objects_list = Aluno.objects.all()
-    return render_to_response('/aluno', {'object_list':objects_list,}, 
-                              context_instance=RequestContext(request))
+    form = AlunoForm();
+    multiform = AlunosForm();
+    return render_to_response("private/aluno/list.html", {'object_list':objects_list, 'form':form, 'multiform': multiform},  context_instance=RequestContext(request))
 
 @permission_required("core.professor", login_url="/home")
-def criar_disciplina(request):
+def criar_grupo(request):
     if request.method == 'POST':
-        form = DisciplinaForm(request.POST)
+        form = GrupoForm(request.POST)
         if form.is_valid():
             with transaction.commit_on_success():
-                disciplina = Disciplina(codigo = form.cleaned_data["codigo"], nome = form.cleaned_data["nome"], professor = request.user.professor)
-                disciplina.save()
-                return HttpResponseRedirect('/disciplina/list')
+                grupo = Grupo(codigo = form.cleaned_data["codigo"], nome = form.cleaned_data["nome"], professor = request.user.professor)
+                grupo.save()
+                return HttpResponseRedirect('/grupo/list')
             return HttpResponse('Deu Erro.')
     else:
-        form = DisciplinaForm()
+        form = GrupoForm()
         
-    return render_to_response('private/disciplina/disciplina_form.html', {'form':form,}, 
+    return render_to_response('private/grupo/disciplina_form.html', {'form':form,}, 
                               context_instance=RequestContext(request))
     
 @permission_required("core.professor", login_url="/home")
-def adicionar_alunos_disciplina(request, pk, filtro=""):
-    disciplina = Disciplina.objects.get(pk=pk)
+def adicionar_alunos_grupo(request, pk, filtro=""):
+    grupo = Grupo.objects.get(pk=pk)
     if request.method == 'POST':
-        form = DisciplinaAlunosForm(disciplina, filtro, request.POST)
+        form = GrupoAddAlunosForm(grupo, filtro, request.POST)
         if form.is_valid():
             with transaction.commit_on_success():
                 alunos = form.cleaned_data["alunos_disponiveis"]
                 for aluno_id in alunos:
                     aluno = Aluno.objects.get(id = aluno_id)
-                    disciplina.alunos.add(aluno)
-                disciplina.save()
-                return HttpResponseRedirect('/disciplina/list')
+                    grupo.alunos.add(aluno)
+                grupo.save()
+                return HttpResponseRedirect('/grupo/list')
             return HttpResponse('Deu Erro.')
     else:
-        form = DisciplinaAlunosForm(disciplina, filtro)
+        form = GrupoAddAlunosForm(grupo, filtro)
          
-    return render_to_response('private/disciplina/adicionar_alunos_form.html', {'form':form, 'disciplina':disciplina}, 
+    return render_to_response('private/grupo/adicionar_alunos_form.html', {'form':form, 'grupo':grupo}, 
                               context_instance=RequestContext(request))
 
     

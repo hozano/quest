@@ -1,26 +1,28 @@
-{% extends "private/base_private.html" %}
+{% extends "private/base.html" %}
 
 
-{% block menu %}
+{% block sidebar %}
 
-<div id="templatemo_menu_wrapper">
-    <div id="templatemo_menu">
-        
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/submissoes">Submissões</a></li>
-            <li><a href="/questionarios">Questionários</a></li>
-            {% if perms.core.professor %}
-            	<li><a href="/questoes">Questões</a></li>
-            	<li><a href="/cadastros" class="current">Cadastros</a></li>
-            {% endif %}
-            <li><a href="/logout"> Sair</a></li>
-        </ul>    	
-    
-    </div> <!-- end of templatemo_menu -->
-</div>
+<li><a href="/"><i class="icon-home"></i>Home</a>
+<li><a class="has_sub"><i class="icon-list-alt"></i>Questionarios 
+<span class="pull-right"> <i class="icon-chevron-right"></i></span></a>
+	<ul>
+		<li><a href="widgets1.html">Widgets #1</a></li>
+		<li><a href="widgets2.html">Widgets #2</a></li>
+		<li><a href="widgets3.html">Widgets #3</a></li>
+	</ul></li>
+<li><a href="/"><i class="icon-reply"></i>Submissões</a>
+<li><a href="/"><i class="icon-question-sign"></i>Questões</a>
+<li><a class="has_sub open"><i class=icon-group></i>Cadastros
+<span class="pull-right"> <i class="icon-chevron-right"></i></span></a>
+	<ul>
+		<li><a href="/aluno">Alunos</a></li>
+		<li><a href="/professor">Professores</a></li>
+		<li><a href="/grupo">Grupos</a></li>
+	</ul></li>
 
-{% endblock %}
+{% endblock %} 
+
 
 {% block content %}
 

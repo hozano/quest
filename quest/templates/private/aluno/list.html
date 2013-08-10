@@ -1,5 +1,133 @@
 {% extends "private/cadastros.html" %}
 
+{% block navigator %} {% endblock %}
+{% block header-button %}
+
+<li class="dropdown dropdown-big"><a href="#cad_aluno" data-toggle="modal"> 
+<i class="icon-plus-sign"></i> Cadastrar</a> 
+
+<!-- Modal -->
+	<div id="cad_aluno" class="modal hide fade" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Cadastrar Aluno</h3>
+		</div>
+		<form name='generic_form' action="/aluno/create" enctype="multipart/form-data" method="post"> {% csrf_token %}
+			<div class="modal-body">
+				{{ form }}
+			</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
+			<button type="submit" class="btn btn-primary">Cadastrar</button>
+		</div>
+		</form>
+	</div> 
+	
+{% endblock %} 
+
+{% block header-data %} {% endblock %} 
+
+{% block content-title %} Alunos {% endblock %}
+
+{% block content-bread %}
+
+<a href="/"><i class="icon-home"></i> Home</a>
+<!-- Divider -->
+<span class="divider">/</span>
+<a href="#" class="bread-current">Alunos</a>
+
+{% endblock %} 
+
+
+{% block main-content %}
+<div class="row-fluid">
+		<div class="span8">
+			<!-- User widget -->
+			<div class="widget">
+				<div class="widget-head">
+					<div class="pull-left">Alunos</div>
+					<div class="widget-icons pull-right">
+						<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="widget-content">
+					<div class="padd">
+
+						{% for aluno in object_list %}
+						<div class="user">
+							<div class="user-pic">
+								<!-- User pic -->
+								<a href="#"><img
+									src="{{STATIC_URL}}macadmin/img/user-big.jpg"
+									alt="{{ aluno }}" /></a>
+							</div>
+
+							<div class="user-details">
+								<h5>{{ aluno }}</h5>
+
+								<p>{{ aluno.about }}</p>
+
+								<a href="/aluno/detail/{{aluno.id}}"
+									class="btn btn-info btn-mini"><i class="icon-user"></i> Ver
+									Perfil</a> <a href="mailto:{{aluno.email}}"
+									class="btn btn-mini"><i class="icon-envelope-alt"></i>
+									Enviar Mensagem</a>
+
+							</div>
+							<div class="clearfix"></div>
+						</div>
+
+						<hr />
+						{% endfor %}
+
+					</div>
+					<div class="widget-foot"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+ {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {% block extrahead %} 
 <script>
 $(function() {

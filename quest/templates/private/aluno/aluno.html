@@ -1,5 +1,69 @@
 {% extends "private/cadastros.html" %}
 
+
+{% block content-title %} 
+<img src="{{STATIC_URL}}macadmin/img/user.jpg"> {{ aluno }}
+
+ {% endblock %}
+ 
+ {% block content-bread %}
+
+<a href="/"><i class="icon-home"></i> Home</a>
+<!-- Divider -->
+<span class="divider">/</span>
+<a href="#" class="bread-current">Aluno</a>
+
+{% endblock %} 
+
+{% block main-content %}
+
+<div class="row-fluid">
+
+	<!--  Questões -->
+	<div class="span6">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left">Questionários Abertos</div>
+				<div class="widget-icons pull-right">
+					<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="widget-content">
+		
+					<div class="clearfix"></div>
+					<hr />
+			</div>
+			<div class="widget-foot">Questionários Disponiveis</div>
+		</div>
+	</div>
+	
+	<!--  Disciplinas -->
+	
+	<div class="span6">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left">Grupos</div>
+				<div class="widget-icons pull-right">
+					<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+			<div class="widget-content">
+					<div class="clearfix"></div>
+					<hr />
+			</div>
+			<div class="widget-foot">Grupos que o aluno participa</div>
+		</div>
+	</div>
+	
+</div>
+
+{% endblock %}
+
+
+
 {% block content-box %}
 <h2>Aluno: {{ aluno }}</h2>
 

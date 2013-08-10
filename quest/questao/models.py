@@ -2,12 +2,12 @@
 from django.contrib.auth.models import User 
 from django.db import models
 from quest import tagging
-from quest.core.models import Disciplina, Aluno
+from quest.core.models import Grupo, Aluno
 
 class Questionario(models.Model):
     nome = models.CharField(max_length=100)
     criador = models.ForeignKey(User)
-    disciplinas = models.ManyToManyField(Disciplina)
+    grupos = models.ManyToManyField(Grupo)
     hora_inicio = models.DateTimeField()
     hora_fim = models.DateTimeField()
     dicionario = {}
@@ -46,8 +46,7 @@ class Questionario(models.Model):
 
 class QuestaoManager(models.Manager):pass
 
-class Questao (models.Model):
-    
+class Questao(models.Model):
     nome = models.CharField(max_length=100)
     enunciado = models.TextField()
     criador = models.ForeignKey(User)

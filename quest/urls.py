@@ -1,7 +1,7 @@
 # coding:utf-8
 from django.conf.urls.defaults import patterns, include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from quest.core.models import Professor, Aluno, Disciplina
+from quest.core.models import Professor, Aluno, Grupo
 from django.views.generic import ListView, DetailView
 
 
@@ -26,20 +26,21 @@ urlpatterns = patterns('',
     (r'^mudar_pwd$', 'django.contrib.auth.views.password_change', {'password_change_form': AdminPasswordChangeForm, 'template_name' : 'private/professor/pwd.html'}),    
     (r'home$', 'django.contrib.auth.views.password_change_done', {'template_name' : 'private/home.html'}),
     
-    (r'^professor$', permission_required("core.professor",login_url="/home")(ListView.as_view(model=Professor, template_name="private/professor/list.html"))),
+    (r'^professor$',  'quest.core.views.professor'),
     (r'^professor/list$', permission_required("core.professor",login_url="/home")(ListView.as_view(model=Professor, template_name="private/professor/list.html"))),
     (r'^professor/create$', 'quest.core.views.criar_professor'),
     (r'^professor/detail/(?P<pk>\d+)$', DetailView.as_view(model=Professor, template_name='private/professor/professor.html')),
     
-    (r'^aluno$', permission_required("core.professor",login_url="/home")(ListView.as_view(model=Aluno, template_name="private/aluno/list.html"))),
+    (r'^aluno$', 'quest.core.views.aluno'),
     (r'^aluno/list$', permission_required("core.professor",login_url="/home")(ListView.as_view(model=Aluno, template_name="private/aluno/list.html"))),
     (r'^aluno/create$', 'quest.core.views.criar_aluno'),
     (r'^aluno/create_m$', 'quest.core.views.criar_alunos'),
     (r'^aluno/detail/(?P<pk>\d+)$', DetailView.as_view(model=Aluno, template_name='private/aluno/aluno.html')),
     
-    (r'^disciplina/list$', permission_required("core.professor",login_url="/home")(ListView.as_view(model=Disciplina, template_name="private/disciplina/list.html"))),
+    (r'^grupo$', permission_required("core.professor",login_url="/home")(ListView.as_view(model=Grupo, template_name="private/grupo/list.html"))),
+    (r'^disciplina/list$', permission_required("core.professor",login_url="/home")(ListView.as_view(model=Grupo, template_name="private/disciplina/list.html"))),
     (r'^disciplina/create$', 'quest.core.views.criar_disciplina'),
-    (r'^disciplina/detail/(?P<pk>\d+)$', DetailView.as_view(model=Disciplina, template_name='private/disciplina/disciplina.html')),
+    (r'^disciplina/detail/(?P<pk>\d+)$', DetailView.as_view(model=Grupo, template_name='private/disciplina/disciplina.html')),
     (r'^disciplina/add/(?P<pk>\d+)$', 'quest.core.views.adicionar_alunos_disciplina'),
     
     (r'^questoes$', 'quest.questao.views.questoes'),

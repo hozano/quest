@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
 from django import forms
 from django.contrib.auth.models import User
-from quest.core.models import Aluno, Disciplina
+from quest.core.models import Aluno, Grupo
 from django.contrib.auth.forms import UserCreationForm
 
 class ProfessorForm(UserCreationForm):
@@ -35,15 +35,15 @@ class AlunoForm(UserCreationForm):
 class AlunosForm(forms.Form):
     arquivo = forms.FileField()
     
-class DisciplinaForm(forms.ModelForm):
+class GrupoForm(forms.ModelForm):
     class Meta:
-        model = Disciplina
+        model = Grupo
         exclude = ["alunos", "professor", "questionarios"]
         
-class DisciplinaAlunosForm(forms.Form):
+class GrupoAddAlunosForm(forms.Form):
         
     def __init__(self, disciplina, filtro, *args, **kwargs):
-        super(DisciplinaAlunosForm, self).__init__(*args, **kwargs)
+        super(GrupoAddAlunosForm, self).__init__(*args, **kwargs)
         matriculados = disciplina.alunos.all()
         disponiveis = [aluno for aluno in Aluno.objects.all() if aluno not in matriculados and filtro in aluno.nome]
         self.fields["alunos_disponiveis"] = forms.MultipleChoiceField(

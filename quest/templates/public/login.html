@@ -1,59 +1,104 @@
-{% extends "public/base.html" %}
+{% extends "public/index.html" %} {% block menu %}
+<li><a href="#">Contact</a></li>
+{% endblock %} {% block content %}
 
-{% block content %}
+<!-- Page content starts -->
 
-<div id="templatemo_content_wrapper">
+<div class="content">
+	<div class="container">
+		<div class="row">
+			<div class="span6">
+				<!-- Some content -->
+				<h3 class="title">
+					Register Today <span class="color">!!!</span>
+				</h3>
+				<h4>Morbi tincidunt posuere turpis eu laoreet</h4>
+				<p>Nullam in est urna. In vitae adipiscing enim. Curabitur
+					rhoncus condimentum lorem, non convallis dolor faucibus eget. In
+					vitae adipiscing enim. Curabitur rhoncus condimentum lorem, non
+					convallis dolor faucibus eget. In ut nulla est.</p>
+				<h5>Maecenas hendrerit neque id</h5>
+				<ul>
+					<li>Etiam adipiscing posuere justo, nec iaculis justo dictum
+						non</li>
+					<li>Cras tincidunt mi non arcu hendrerit eleifend</li>
+					<li>Aenean ullamcorper justo tincidunt justo aliquet et
+						lobortis diam faucibus</li>
+					<li>Maecenas hendrerit neque id ante dictum mattis</li>
+					<li>Vivamus non neque lacus, et cursus tortor</li>
+				</ul>
 
-	<div id="templatemo_sidebar">
-		
-    	<div class="sidebar_box">
-        	
-            <h2>Não tem Conta?</h2>
-            
-            <div class="news_box">
-                <p style="color:black">Entre em contato com o Professor Mário Hozano e a equipe do <a href="http://lamp.aracomp.com.br">LAMP</a>
-                e obtenha as informações para acessar o <i>Quest?</i></p>
-            </div>
-            
-            <h2>Perdeu a Senha?</h2>
-            
-            <div class="news_box">
-                <p style="color:black">Envie um e-mail para o suporte e obtenha uma nova senha de acesso.</p>
-            </div>
-            
-        </div><div class="sidebar_box_bottom"></div>
-        
-    </div> <!-- end of sidebar -->
-    
-    <div id="templatemo_content">
-    
-    	<div class="content_box">
-        
-        	<h2>Indique seus dados de acesso</h2>
-            <br/>
-            <form action="/accounts/login/" method="post">{% csrf_token %}
-            	<input type="hidden" name="next" value="/home"/>
-            	<table width="100%">
-            		<tr><td width="35%" style="text-align:right">Usuário:</td><td>{{form.username}}</td></tr>
-            		<tr><td width="" style="text-align:right"></td><td>{% for error in form.username.errors%}{{error}}{% endfor %}</td></tr>
-        			<tr style="height:8px"><td style="text-align:right"></td><td></tr>
-            		<tr><td style="text-align:right">Senha:</td><td>{{form.password}}</tr>
-        			<tr><td width="" style="text-align:right"></td><td>{% for error in form.password.errors%}{{error}}{% endfor %}</td></tr>
-        			<tr style="height:8px"><td style="text-align:right"></td><td></tr>
-            		<tr ><td></td><td><input type='submit' value="Entrar"/></td></tr>
-            	</table>
-        	</form>
-            
-          <div class="cleaner_h20"></div>
-            
-                    
-        	<div class="cleaner"></div>
-        </div><div class="content_box_bottom"></div>
-        
-    </div> <!-- end of content -->
-    
-    <div class="cleaner"></div>
+				<p>Nullam in est urna. In vitae adipiscing enim. In ut nulla
+					est. Nullam in est urna. In vitae adipiscing enim. Curabitur
+					rhoncus condimentum lorem, non convallis dolor faucibus eget. In ut
+					nulla est.</p>
 
+			</div>
+
+			<!-- Login form -->
+			<div class="span6">
+				<div class="formy well">
+					<!-- Title -->
+					<h4 class="title">Login to Your Account</h4>
+					<div class="form">
+
+						<form class="form-horizontal"  method="post" action="/accounts/login/"> {% csrf_token %}
+							<input type="hidden" name="next" value="/home"/> 
+							<!-- Username -->
+							<div class="control-group">
+								<label class="control-label" for="username">Login</label>
+								<div class="controls">
+									<input type="text" class="input-large" id="username" name="username">
+								</div>
+								<div class="controls">
+									{% for error in form.username.errors%}{{error}}{% endfor %}
+								</div>
+							</div>
+							
+							<!-- Password -->
+							<div class="control-group">
+								<label class="control-label" for="password">Senha</label>
+								<div class="controls">
+									<input type="password" class="input-large" id="password" name="password">
+								</div>
+								<div class="controls">
+									{% for error in form.password.errors%}{{error}}{% endfor %}
+								</div>
+							</div>
+
+							<!-- Checkbox -->
+							<div class="control-group">
+								<div class="controls">
+									<label class="checkbox inline"> <input type="checkbox"
+										id="inlineCheckbox1" value="agree"> Remember Password
+									</label>
+								</div>
+							</div>
+
+							<!-- Buttons -->
+							<div class="form-actions">
+								<!-- Buttons -->
+								<button type="submit" class="btn">Login</button>
+								<button type="reset" class="btn">Reset</button>
+							</div>
+						</form>
+						<hr />
+						<!-- Social media button s
+                                      <h5>Login using</h5>
+                                      <a href="#"><img src="img/social/facebook.png" alt="" /></a><br />
+                                      <a href="#"><img src="img/social/twitter.png" alt="" /></a><br />
+                                      <a href="#"><img src="img/social/linkedin.png" alt="" /></a><br />
+                                      <hr />
+                                       -->
+						<h5>New Account</h5>
+						<!-- Register link -->
+						Don't have an Account? <a href="register.html">Register</a>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
 </div>
 
 {% endblock %}

@@ -1,0 +1,15 @@
+eclipse.preferences.version=1
+encoding//quest/core/forms.py=utf-8
+encoding//quest/core/models.py=utf-8
+encoding//quest/core/views.py=utf-8
+encoding//quest/questao/forms.py=utf-8
+encoding//quest/questao/models.py=utf-8
+encoding//quest/questao/objetiva/__init__.py=utf-8
+encoding//quest/questao/objetiva/forms.py=utf-8
+encoding//quest/questao/objetiva/models.py=utf-8
+encoding//quest/questao/objetiva/views.py=utf-8
+encoding//quest/questao/subjetiva/__init__.py=utf-8
+encoding//quest/questao/subjetiva/models.py=utf-8
+encoding//quest/questao/subjetiva/views.py=utf-8
+encoding//quest/questao/views.py=utf-8
+encoding//quest/urls.py=utf-8

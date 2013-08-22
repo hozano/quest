@@ -1,5 +1,100 @@
 {% extends "private/cadastros.html" %}
 
+
+{% block navigator %} {% endblock %}
+{% block header-button %}
+
+<li class="dropdown dropdown-big"><a href="#cad_prof" data-toggle="modal"> 
+<i class="icon-plus-sign"></i> Cadastrar</a> 
+
+<!-- Modal -->
+	<div id="cad_prof" class="modal hide fade" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Cadastrar Grupo</h3>
+		</div>
+		<form name='generic_form' action="/grupo/create" enctype="multipart/form-data" method="post"> {% csrf_token %}
+			<div class="modal-body">
+				{{ form }}
+			</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
+			<button type="submit" class="btn btn-primary">Cadastrar</button>
+		</div>
+		</form>
+	</div> 
+	
+{% endblock %} 
+
+{% block header-data %} {% endblock %} 
+
+{% block content-title %} Grupos {% endblock %}
+
+{% block content-bread %}
+
+<a href="/"><i class="icon-home"></i> Home</a>
+<!-- Divider -->
+<span class="divider">/</span>
+<a href="#" class="bread-current">Grupos</a>
+
+{% endblock %} 
+
+
+{% block main-content %}
+<div class="row-fluid">
+		<div class="span8">
+			<!-- User widget -->
+			<div class="widget">
+				<div class="widget-head">
+					<div class="pull-left">Grupos</div>
+					<div class="widget-icons pull-right">
+						<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="widget-content">
+				<div class="padd">
+					{% for grupo in object_list %}
+						<div>				
+							<h5 class=icon-group> {{ grupo.nome }}  </h5>
+
+							<p>{{ grupo.about }}</p>
+
+							<a href="/grupo/detail/{{grupo.id}}"
+								class="btn btn-info btn-mini"><i class="icon-file-alt"></i> Ver
+								Detalhes</a> <a href="mailto:{{grupo}}"
+								class="btn btn-mini"><i class="icon-envelope-alt"></i>Enviar Mensagem</a>
+							<div class="clearfix"></div>
+						</div>
+
+						<hr />
+						{% endfor %}
+
+				</div>
+					<div class="widget-foot"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+ {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {% block content-box %}
 <h2>Lista de Disciplinas</h2>
 

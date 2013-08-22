@@ -1,28 +1,5 @@
 {% extends "private/base_private.html" %}
 
-{% block menu %}
-
-<div id="templatemo_menu_wrapper">
-    <div id="templatemo_menu">
-        
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/submissoes">Submissões</a></li>
-            <li><a href="/questionarios">Questionários</a></li>
-            
-            {% if perms.core.professor %}
-            	<li><a href="/questoes"  class="current">Questões</a></li>
-            	<li><a href="/cadastros">Cadastros</a></li>
-            {% endif %}
-            
-            <li><a href="/logout">Sair </a></li>
-        </ul>    	
-    
-    </div> <!-- end of templatemo_menu -->
-    
-</div>
-
-{% endblock %}
 
 {% block content %}
 

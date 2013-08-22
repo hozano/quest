@@ -32,6 +32,7 @@ class Professor(models.Model):
 class Aluno(models.Model):
     matricula = models.CharField(max_length= 15)
     user = models.OneToOneField(User)
+    about = models.TextField()
     
     @property
     def nome(self):
@@ -49,9 +50,13 @@ class Grupo(models.Model):
     codigo = models.CharField(max_length = 10)
     nome = models.CharField(max_length = 30)
     professor = models.ForeignKey(Professor)
+    about = models.TextField()
     
     def __unicode__(self):
         return self.codigo
     
     def field_list(self):
         return [('Codigo', self.codigo), ('Nome', self.nome), ('Professor', self.professor)]
+    
+    def matriculados(self):
+        return len(self.alunos.all())

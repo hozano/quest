@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 @permission_required("core.professor", login_url="/home")
 def criar_questao(request):
+    print "creating questao objetiva"
     if request.method == 'POST':
         form = QuestaoObjetivaForm(request.POST)
         formset = AlternativaObjetivaFormSet(request.POST)

@@ -57,7 +57,6 @@ def criar_professor(request):
                 user.user_permissions.add(Permission.objects.get(codename = "professor"))
                 professor = Professor(user = user)
                 professor.save()
-                print "professor salvo"
                 return HttpResponseRedirect('/professor')
     print "redirecionando"
     return HttpResponseRedirect('/professor')
@@ -196,15 +195,18 @@ def criar_grupo(request):
         form = GrupoForm(request.POST)
         if form.is_valid():
             with transaction.commit_on_success():
-                grupo = Grupo(codigo = form.cleaned_data["codigo"], nome = form.cleaned_data["nome"], professor = request.user.professor)
+                grupo = Grupo(codigo = form.cleaned_data["codigo"], nome = form.cleaned_data["nome"], professor = request.user.professor,
+                              about = form.cleaned_data["about"])
                 grupo.save()
-                return HttpResponseRedirect('/grupo/list')
-            return HttpResponse('Deu Erro.')
-    else:
-        form = GrupoForm()
-        
-    return render_to_response('private/grupo/disciplina_form.html', {'form':form,}, 
-                              context_instance=RequestContext(request))
+                return HttpResponseRedirect('/grupo')
+    return HttpResponseRedirect('/grupo')
+
+@permission_required("core.professor", login_url="/home")
+def grupo(request):
+    object_list = Grupo.objects.all();
+    form = GrupoForm();
+    return render_to_response("private/grupo/list.html", {'object_list': object_list, 'form': form},
+                              context_instance=RequestContext(request));
     
 @permission_required("core.professor", login_url="/home")
 def adicionar_alunos_grupo(request, pk, filtro=""):

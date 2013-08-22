@@ -41,18 +41,15 @@
                       </thead>
                       <tbody>
                       {% for questao in professor.get_questoes_criadas %} 
-                      <a href="/questao/detail/{{questao.uid}}/{{ questao.id }}/">
-						{{questao}} 
-                        <tr>
+                        <tr onclick="document.location = '/questao/detail/{{ questao.uid}}/{{ questao.id }}';">
                           <td>{{ questao }}</td>
                           <td>{{ questao.modulo.tipo_string }}</td>
                           <td>{{ questao.nivel_estatico }}</td>
                           <td><span class="label label-info"> {{ questao.get_tags_as_string }} </span></td>
-                        </tr> </a>
-                        </tbody>
-                       </table>
-					
+                        </tr>
 					{% endfor %} 
+					 </tbody>
+                </table>
 					{% else %} 
 					<div class="padd">
 						<i>Nenhuma questão criada.</i>
@@ -79,7 +76,7 @@
 			</div>
 			
 			<div class="widget-content">
-				{% if professor.get_disciplinas %}
+				{% if professor.get_grupos %}
 				
 				{% else %}
 					<div class="padd">

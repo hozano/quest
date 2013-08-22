@@ -21,9 +21,8 @@ def questoes(request):
     @type request: HttpRequest
     @return: Página principal
     @rtype: HttpResponse
-    '''
-    questoes = get_questoes()
-    return render_to_response('private/questao/index.html', {'questoes':questoes}, 
+    ''' 
+    return render_to_response('private/questoes.html', {'questoes':get_questoes()}, 
                               context_instance=RequestContext(request))
 
 @permission_required("core.professor", login_url="/home")

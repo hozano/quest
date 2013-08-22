@@ -10,12 +10,6 @@ class Questionario(models.Model):
     grupos = models.ManyToManyField(Grupo)
     hora_inicio = models.DateTimeField()
     hora_fim = models.DateTimeField()
-    dicionario = {}
-    
-    def pontuar(self, lis):
-        for i, j in enumerate(self.get_questoes()):
-            self.dicionario[j] = lis[i]
-        return self.dicionario
     
     def field_list(self):
         return [('Nome', self.nome), ('Data Início', self.hora_inicio), ('No. Questões', self.questoes.count())]
@@ -54,7 +48,6 @@ class Questao(models.Model):
     nivel_estatico = models.IntegerField()
     nivel_dinamico = models.IntegerField(null=True)
     questionarios = models.ManyToManyField(Questionario)
-    
     objects = QuestaoManager()
     
     class Meta:
@@ -79,8 +72,12 @@ class Questao(models.Model):
     def field_list(self):
         return [('Nome', self.nome), ('Tags', self.get_tags_as_string()),]
     
+    def meta(self):
+        return self.__class__
+    
     def get_respostaForm(self, **kwargs):
         return self.RespostaForm(self, **kwargs)
+    
     
 tagging.register(Questao)
 
@@ -113,8 +110,7 @@ QUESTOES_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(1, QUESTOES_PATH)
 
 def import_libs(caminho):
-    """ Imports the libs, returns a list of the libraries. 
-    Pass in dir to scan """
+    """ Imports the libs, returns a list of the libraries.  Pass in dir to scan """
        
     library_list = []
     

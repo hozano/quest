@@ -22,7 +22,6 @@ class Professor(models.Model):
     def get_grupos(self):
         return Grupo.objects.filter(professor = self)
     
-    @property 
     def email(self):
         return self.user.email
     
@@ -34,9 +33,11 @@ class Aluno(models.Model):
     user = models.OneToOneField(User)
     about = models.TextField()
     
-    @property
     def nome(self):
         return self.user.get_full_name()
+    
+    def get_grupos(self):
+        return Grupo.objects.filter(alunos = self)
     
     def __unicode__(self):
         return self.user.get_full_name()  
@@ -53,7 +54,7 @@ class Grupo(models.Model):
     about = models.TextField()
     
     def __unicode__(self):
-        return self.codigo
+        return self.nome
     
     def field_list(self):
         return [('Codigo', self.codigo), ('Nome', self.nome), ('Professor', self.professor)]

@@ -4,7 +4,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from quest.core.models import Professor, Aluno, Grupo
 from django.views.generic import ListView, DetailView
 
-
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 from django.contrib.auth.decorators import  permission_required, login_required
@@ -40,8 +39,8 @@ urlpatterns = patterns('',
     (r'^grupo$', 'quest.core.views.grupo'),
     (r'^grupo/list$', permission_required("core.professor",login_url="/home")(ListView.as_view(model=Grupo, template_name="private/disciplina/list.html"))),
     (r'^grupo/create$', 'quest.core.views.criar_grupo'),
-    (r'^grupo/detail/(?P<pk>\d+)$', DetailView.as_view(model=Grupo, template_name='private/grupo/grupo.html')),
-    (r'^disciplina/add/(?P<pk>\d+)$', 'quest.core.views.adicionar_alunos_disciplina'),
+    (r'^grupo/detail/(?P<pk>\d+)$',  'quest.core.views.show_grupo'),
+    (r'^grupo/add/(?P<pk>\d+)$', 'quest.core.views.adicionar_alunos_grupo'),
     
     (r'^questoes$', 'quest.questao.views.questoes'),
     (r'^questao/create/(?P<uid>[a-zA-Z_]\w*)$', 'quest.questao.views.criar_questao'),
@@ -52,17 +51,13 @@ urlpatterns = patterns('',
     (r'^questionarios$', 'quest.questao.views.questionarios'),
     (r'^questionario/create$', 'quest.questao.views.criar_questionario'),
     (r'^questionario/detail/(?P<pk>\d+)$', 'quest.questao.views.show_questionario'),
+    (r'^questionario/delete/(?P<pk>\d+)$', 'quest.questao.views.delete_questionario'),
     (r'^questionario/aplicar/(?P<pk>\d+)$', 'quest.questao.views.aplicar_questionario'),
     (r'^questionario/submeter/(?P<pk>\d+)$', 'quest.questao.views.submeter_questionario'),
     (r'^questionario/pontuar/(?P<pk>\d+)$', 'quest.questao.views.pontuar_questionario'),
     
-    (r'^submissoes$', 'quest.questao.views.listar_submissoes'),
-    (r'^submissoes/disciplina_(?P<disciplina_id>\d+)$', 'quest.questao.views.listar_submissoes'),
-    (r'^submissoes/(?P<disciplina_id>\d+)/questionario_(?P<questionario_id>\d+)$', 'quest.questao.views.listar_submissoes'),
-    (r'^submissoes/(?P<disciplina_id>\d+)/aluno_(?P<aluno_id>\d+)$', 'quest.questao.views.listar_submissoes'),
-    (r'^submissoes/(?P<disciplina_id>\d+)/(?P<aluno_id>\d+)/questionario_(?P<questionario_id>\d+)$', 'quest.questao.views.listar_submissoes'),
+    (r'^submissoes$', 'quest.questao.views.submissao'),
     (r'^submissao/detail/(?P<pk>\d+)$', login_required(DetailView.as_view(model=Submissao, template_name="private/submissao/submissao.html"))),
-    (r'^submissao/detail/(?P<pk>\d+)/(?P<disciplina>\d+)/(?P<aluno>\d+)$', login_required(DetailView.as_view(model=Submissao, template_name="private/submissao/submissao.html"))),
     (r'^submissoes/pontuar/(?P<pk>\d+)$', 'quest.questao.views.pontuar_submissao'),
     
     # Uncomment the admin/doc line below to enable admin documentation:

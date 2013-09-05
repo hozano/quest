@@ -23,7 +23,7 @@ class AlternativaObjetivaForm(forms.ModelForm):
             error_row = u'<tr><td colspan="2">%s</td></tr>',
             row_ender = u'</td></tr>',
             help_text_html = u'<br /><span class="helptext">%s</span>',
-            errors_on_separate_row = False)
+            errors_on_separate_row = True)
 
 class BaseAlternativaFormSet(BaseFormSet):
     

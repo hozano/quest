@@ -1,33 +1,56 @@
-{% extends "private/submissao/base_submissao.html" %}
+{% extends "private/submissao/submissoes.html" %} 
 
-{% block extrahead %}
-	{{ form.media }}
-	<script type="text/javascript" src="{{ STATIC_URL }}js/tiny_mce/tiny_mce.js"></script>
-	<script type="text/javascript" src="{{ STATIC_URL }}js/tiny_mce/tinymce_textareas.js"></script>
-{% endblock %}
+{% block main-content %}
 
-{% block content-submissao %}
+<div class="row-fluid">
 
-<h2>Questionário: {{questionario.nome}}</h2>
+	<div class="span12">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left">Submeter Questionário</div>
+				<div class="widget-icons pull-right">
+					<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="widget-content">
+				<div class="padd">
+					<h2>Questionário: {{questionario.nome}}</h2>
 
-<p>
-Início: {{questionario.hora_inicio}}<br/>
-Fim: {{questionario.hora_fim}}
-</p><br/>
+					<p>
+						Início: {{questionario.hora_inicio}}<br /> 
+						Fim: {{questionario.hora_fim}}
+					</p>
+					<br />
 
+					<form name='generic_form' action="" enctype="multipart/form-data"
+						method="post">
+						{% csrf_token %}
 
-<form name='generic_form' action="" enctype="multipart/form-data" method="post"> {% csrf_token %}
+						<p>{% for form in forms %}
+							<p>
+							<h2>Questão {{forloop.counter}}</h2>
+							<h3>{{form.questao.enunciado|safe}}</h3>
+							{% if form.errors %} Você tem que indicar uma resposta. <br />{% endif %} 
+								{{ form }}
+							</p>
+						{% endfor %}
+						</p>
 
-<p>
-{% for form in questoes %}
-	<p>
-	<h2> Questão {{forloop.counter}}</h2><h3>{{form.questao.enunciado|safe}}</h3>
-	{% if form.errors %} Você tem que indicar uma resposta. <br/>{% endif %}
-		{{ form }}
-	</p>
-{% endfor %}
-</p>
+						<p>
+							<br/> <input type='submit' value='Enviar' />
+						</p>
+					</form>
 
-<p><br/><input type='submit' value='Enviar'/></p>
-</form>
-{% endblock %}
+				</div>
+				<div class="clearfix"></div>
+				<hr />
+			</div>
+			<div class="widget-foot"></div>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %} 
+

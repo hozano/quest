@@ -22,8 +22,7 @@ def questoes(request):
     @return: Página principal
     @rtype: HttpResponse
     ''' 
-    return render_to_response('private/questoes.html', {'questoes':get_questoes()}, 
-                              context_instance=RequestContext(request))
+    return render_to_response('private/questoes.html', context_instance=RequestContext(request))
 
 @permission_required("core.professor", login_url="/home")
 def criar_questao(request, uid):
@@ -31,7 +30,6 @@ def criar_questao(request, uid):
         modulo = modulo_map[uid]
         return modulo.criar_questao(request)
     else:
-        print "Não foi possível criar a questao"
         return render_to_response('private/questao/index.html', 
                                   context_instance=RequestContext(request))
 
@@ -41,7 +39,6 @@ def atualizar_questao(request, uid, pk):
         modulo = modulo_map[uid]
         return modulo.atualizar_questao(request, pk)
     else:
-        print "Não foi possível atualizar a questao"
         return render_to_response('private/questao/index.html', 
                                   context_instance=RequestContext(request))
 
@@ -50,12 +47,9 @@ def atualizar_questao(request, uid, pk):
 def remover_questao(request,uid ,pk):
     if modulo_map.has_key(uid): #Resgata o modulo da questao a partir do UID
         modulo = modulo_map[uid]
-        print modulo
         return modulo.remover_questao(request, pk)
     else:
-        print "Não foi possível remover a questao"
-        return render_to_response('private/questao/index.html', 
-                                  context_instance=RequestContext(request))
+        return render_to_response('private/questao/index.html',  context_instance=RequestContext(request))
 
 @login_required
 def show_questao(request, uid, pk):
@@ -76,14 +70,14 @@ def questionarios(request):
     @return: Página principal
     @rtype: HttpResponse
     '''
-    
+    form = QuestionarioForm()
     if request.user.has_perm("core.professor"):
         questionarios = Questionario.objects.all().filter(criador=request.user)
     else:
         questionarios = []
-        for i in request.user.aluno.disciplina_set.all():
+        for i in request.user.aluno.grupo_set.all():
             questionarios += list(i.questionario_set.all())
-    return render_to_response('private/questionario/index.html', {'questionarios':questionarios}, context_instance=RequestContext(request))
+    return render_to_response('private/questionarios.html', {'questionarios':questionarios, "form":form}, context_instance=RequestContext(request))
 
 
 @permission_required("core.professor", login_url="/home")
@@ -101,14 +95,9 @@ def criar_questionario(request):
                     questao = modulo_map[uid].classe.objects.get(id=_id)
                     questao.questionarios.add(questionario)
                     questao.save()    
-                return HttpResponseRedirect('/questionario/pontuar/%i' % (questionario.id))
-                
+                return HttpResponseRedirect('/questionarios')
             return HttpResponse('Deu Erro.')
-    else:
-        form = QuestionarioForm()
-        
-    return render_to_response('private/questionario/form.html', {'form':form}, 
-                                      context_instance=RequestContext(request))
+    return HttpResponseRedirect('/questionarios')
 
 def pontuar_questionario(request, pk):
     questionario = Questionario.objects.get(id=pk)
@@ -125,32 +114,33 @@ def pontuar_questionario(request, pk):
     
 @login_required
 def show_questionario(request, pk):
-    questionario = Questionario.objects.get(id = pk)
-    link = "/questionario/detail/%s" % pk
-        
-    return render_to_response('private/questionario/questionario.html', {'questionario':questionario, "link":link},
-                              context_instance = RequestContext(request))
+    questionario = Questionario.objects.get(id = pk)        
+    return render_to_response('private/questionario/questionario.html', {'questionario':questionario}, context_instance = RequestContext(request))
+
+def delete_questionario(request, pk):
+    try:
+        Questionario.objects.get(id = pk).delete()
+        return HttpResponseRedirect('/questionarios')
+    except:
+        return HttpResponseRedirect('/questionarios')
 
 @permission_required("core.professor", login_url="/home")
 def aplicar_questionario(request, pk):
     questionario = Questionario.objects.get(pk = pk)
-    disciplinas = Grupo.objects.filter(professor = request.user.professor)
+    grupos = Grupo.objects.filter(professor = request.user.professor)
     if request.method == 'POST':
-        form = AplicarQuestionarioForm(disciplinas, request.POST)
+        form = AplicarQuestionarioForm(grupos, request.POST)
         if form.is_valid():
             with transaction.commit_on_success():
-                disciplinas = form.cleaned_data["disciplinas"]
-                for disciplina_id in disciplinas:
-                    disciplina = Grupo.objects.get(id = disciplina_id)
-                    questionario.disciplinas.add(disciplina)
-                print "disciplinas no questionario ", questionario.disciplinas.all()
+                grupos = form.cleaned_data["grupos"]
+                for grupo_id in grupos:
+                    grupo = Grupo.objects.get(id = grupo_id)
+                    questionario.grupos.add(grupo)
                 questionario.save()
-              
                 return HttpResponseRedirect('/questionarios')
-            
-    form = AplicarQuestionarioForm(disciplinas)
-    return render_to_response('private/questionario/aplicar_questionario.html', {'form':form, 'questionario':questionario}, 
-                              context_instance=RequestContext(request))
+    else:
+        form = AplicarQuestionarioForm(grupos)
+    return render_to_response('private/questionario/aplicar_questionario.html', {'form':form, 'questionario':questionario},  context_instance=RequestContext(request))
  
 @login_required
 def submeter_questionario(request, pk):
@@ -162,70 +152,41 @@ def submeter_questionario(request, pk):
         request.POST['form-TOTAL_FORMS'] = u'%s'%len(questionario.get_questoes())
         request.POST['form-INITIAL_FORMS']= u'0'
         request.POST['form-MAX_NUM_FORMS'] = u''
-        questoes = SubmissaoFormSet(request.POST)
-        questoes.forms = make_forms_from_questionario(questionario, request.POST)
-        if questoes.is_valid():
+        forms = SubmissaoFormSet(request.POST)
+        forms.forms = make_forms_from_questionario(questionario, request.POST)
+        if forms.is_valid():
             submissao = Submissao(questionario = questionario, aluno = request.user.aluno)
             submissao.save()
-            for form in questoes:
+            for form in forms:
                 resposta = form.save(commit=False)
                 resposta.questao = form.questao
                 resposta.submissao = submissao
                 resposta.save()
-            return render_to_response('private/mensagem_generica.html', {'msg':"Sua submissão foi salva com sucesso", 'link':'/submissoes'})
+            return render_to_response('private/mensagem_generica.html', {'msg':"Sua submissão foi salva com sucesso", 'link':'/submissoes'}, context_instance = RequestContext(request))
     else:
-        questoes = SubmissaoFormSet()
-        questoes.forms = make_forms_from_questionario(questionario)
-    return render_to_response('private/submissao/submissao_form.html', {'questionario':questionario, "questoes":questoes},
-                              context_instance = RequestContext(request))
+        forms = SubmissaoFormSet()
+        forms.forms = make_forms_from_questionario(questionario)
+    return render_to_response('private/submissao/submissao_form.html', {'questionario':questionario, "forms":forms}, context_instance = RequestContext(request))
 
 
 @permission_required("core.professor", login_url="/home")
 def pontuar_submissao(request, pk):
+    print "Avaliando"
     submissao = Submissao.objects.get(id=pk)
     if request.method == 'POST':
+        print "Atribuindo nota"
         nota = request.POST.get('pts')
+        print nota
         submissao.nota = nota
         submissao.save()
+        print "Salvo"
         return HttpResponseRedirect('/submissoes')
-    else:
-        return render_to_response('private/submissao/pontuar.html',{}, context_instance=RequestContext(request))
+    return render_to_response('private/submissao/submissao.html',{"submissao":submissao}, context_instance=RequestContext(request))
         
-
 @login_required
-def listar_submissoes(request, disciplina_id=None, aluno_id=None, questionario_id=None):
-    hasperm = request.user.has_perm("core.professor")
-    
-    if not disciplina_id:
-        if hasperm:
-            disciplinas = Grupo.objects.filter(professor = request.user.professor)
-        else:
-            disciplinas = Grupo.objects.filter(alunos = request.user.aluno)
-        return render_to_response("private/submissao/list.html", {"disciplinas":disciplinas}, 
-                                  context_instance = RequestContext(request))
+def submissao(request):
+    if(request.user.has_perm("core.professor")):
+        submissoes = Submissao.objects.all();
     else:
-        disciplina = Grupo.objects.get(pk = disciplina_id)
-        if aluno_id:
-            if questionario_id:
-                aluno = Aluno.objects.get(id = aluno_id)
-                submissoes = Questionario.objects.get(id = questionario_id).submissao_set.filter(aluno = aluno)
-                return render_to_response("private/submissao/list.html", {"submissoes": submissoes, "disciplina":disciplina_id,
-                       "link":"/%s/aluno_%s" % (disciplina_id, aluno_id)}, context_instance = RequestContext(request))
-            else:
-                questionarios = Questionario.objects.filter(disciplinas = disciplina)
-                return render_to_response("private/submissao/list.html", {"questionarios":questionarios, "disciplina":disciplina_id,
-                       "aluno":aluno_id, "link":"/disciplina_%s" % disciplina_id},  context_instance = RequestContext(request))
-        elif questionario_id:
-            questionario = Questionario.objects.get(id = questionario_id)
-            submissoes = questionario.submissao_set.filter(aluno = request.user.aluno)
-            return render_to_response("private/submissao/list.html", {"submissoes": submissoes, "disciplina":disciplina_id, 
-                                        "link":"/disciplina_%s" % disciplina_id}, context_instance = RequestContext(request))
-        else:
-            if hasperm:
-                alunos = disciplina.alunos.all()
-                return render_to_response("private/submissao/list.html", {"disciplina":disciplina_id, "alunos":alunos}, 
-                                      context_instance = RequestContext(request))
-            else:
-                questionarios = Questionario.objects.filter(disciplinas = disciplina)
-                return render_to_response("private/submissao/list.html", {"questionarios":questionarios, "disciplina":disciplina_id},  
-                                          context_instance = RequestContext(request))
+        submissoes = Submissao.objects.filter(aluno = request.user.aluno)
+    return render_to_response('private/submissao/submissoes.html', {'submissoes':submissoes}, context_instance=RequestContext(request))

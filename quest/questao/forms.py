@@ -5,7 +5,6 @@ from tinymce import models as tinymce_models
 import random
 
 
-
 class QuestaoForm(forms.ModelForm):
     enunciado = tinymce_models.HTMLField()
     nivel_estatico = forms.ChoiceField(choices=[(i,i) for i in range(1,11)])
@@ -35,9 +34,9 @@ class QuestionarioForm(forms.ModelForm):
         self.fields['questoes'] = forms.MultipleChoiceField(choices=[('%s#%d' % (i.uid(), i.id), i.nome) for i in get_questoes()],widget=forms.CheckboxSelectMultiple)    
         
 class AplicarQuestionarioForm(forms.Form):
-    def __init__(self, disciplinas, *args, **kwargs):
+    def __init__(self, grupos, *args, **kwargs):
         super(AplicarQuestionarioForm, self).__init__(*args, **kwargs)
-        self.fields['disciplinas'] = forms.MultipleChoiceField(choices=[(i.id, ("%s %s") % (i, i.nome)) for i in disciplinas])
+        self.fields['grupos'] = forms.MultipleChoiceField(choices=[(i.id, ("%s %s") % (i, i.nome)) for i in grupos])
         
 class SubmissaoForm(forms.ModelForm):
     class Meta:

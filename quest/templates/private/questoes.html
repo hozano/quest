@@ -29,15 +29,10 @@
 {% block sidebar %}
 
 <li><a href="/"><i class="icon-home"></i>Home</a>
-<li><a class="has_sub"><i class="icon-list-alt"></i>Questionarios 
-<span class="pull-right"> <i class="icon-chevron-right"></i></span></a>
-	<ul>
-		<li><a href="widgets1.html">Widgets #1</a></li>
-		<li><a href="widgets2.html">Widgets #2</a></li>
-		<li><a href="widgets3.html">Widgets #3</a></li>
-	</ul></li>
-<li><a href="/"><i class="icon-reply"></i>Submissões</a>
-<li><a href="/" class="open"><i class="icon-question-sign"></i>Questões</a>
+<li><a href="/questionarios"><i class="icon-list-alt"></i>Questionarios 
+<li><a href="/submissoes"><i class="icon-reply"></i>Submissões</a>
+{% if perms.core.professor %}
+<li><a href="/questoes" class="open"><i class="icon-question-sign"></i>Questões</a>
 <li><a class="has_sub"><i class=icon-group></i>Cadastros
 <span class="pull-right"> <i class="icon-chevron-right"></i></span></a>
 	<ul>
@@ -45,7 +40,7 @@
 		<li><a href="/professor">Professores</a></li>
 		<li><a href="/grupo">Grupos</a></li>
 	</ul></li>
-
+{% endif %}
 {% endblock %} 
 
 

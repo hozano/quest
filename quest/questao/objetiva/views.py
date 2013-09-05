@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 @permission_required("core.professor", login_url="/home")
 def criar_questao(request):
-    print "creating questao objetiva"
     if request.method == 'POST':
         form = QuestaoObjetivaForm(request.POST)
         formset = AlternativaObjetivaFormSet(request.POST)
@@ -47,11 +46,7 @@ def atualizar_questao(request, pk):
                 query = QuestaoObjetiva.objects.get(id = pk)
                 query.nome = form.cleaned_data['nome']
                 query.enunciado = form.cleaned_data['enunciado']
-                query.criador = questao.criador
-                query.data_criacao = questao.data_criacao
                 query.nivel_estatico = form.cleaned_data['nivel_estatico']
-                query.nivel_dinamico = questao.nivel_dinamico
-                query.questionarios = questao.questionarios.all()
                 query.tags = form.cleaned_data['tags']
                 query.save()
                 AlternativaQuestao.objects.filter(questao = query).delete()
@@ -62,8 +57,7 @@ def atualizar_questao(request, pk):
                         alternativa.alternativa = form_dict['alternativa']
                         alternativa.valor = form_dict['valor']
                         alternativa.save()
-
-                return render_to_response ('private/mensagem_generica.html',{'link':'/questoes', 'msg':'Questão alterada com sucesso!'})
+                return HttpResponseRedirect('/questao/detail/%s/%s' % (questao.uid(), questao.id))
 
     form = QuestaoObjetivaForm(initial={'nome':questao.nome, 'enunciado':questao.enunciado, 
                                         'criador':questao.criador, 'data_criacao':questao.data_criacao, 
@@ -72,21 +66,25 @@ def atualizar_questao(request, pk):
 
     queryset= AlternativaQuestao.objects.filter(questao = questao).values()
     formset = AlternativaObjetivaFormSet(initial=queryset)
-    return render_to_response('private/questao/objetiva/form.html', {'questao':questao, 'form':form, 'formset':formset}, 
-                              context_instance=RequestContext(request))
+    return render_to_response('private/questao/objetiva/show.html', {'questao':questao, 'form':form, 'formset':formset}, context_instance=RequestContext(request))
 
 @login_required
 def show_questao(request, pk):
-    objeto = QuestaoObjetiva.objects.get(id = pk)
-
-    return render_to_response('private/questao/objetiva/show.html', {'questao':objeto}, 
+    questao = QuestaoObjetiva.objects.get(id = pk)
+    form = QuestaoObjetivaForm(initial={'nome':questao.nome, 'enunciado':questao.enunciado, 
+                                        'criador':questao.criador, 'data_criacao':questao.data_criacao, 
+                                        'nivel_estatico':questao.nivel_estatico, 'nivel_dinamico':questao.nivel_dinamico, 
+                                        'questionarios':questao.questionarios, 'tags':questao.get_tags_as_string})
+    queryset= AlternativaQuestao.objects.filter(questao = questao).values()
+    formset = AlternativaObjetivaFormSet(initial=queryset)
+    return render_to_response('private/questao/objetiva/show.html', {'questao':questao, 'form':form, 'formset':formset}, 
                               context_instance=RequestContext(request))
     
 @permission_required("core.professor", login_url="/home")
 def remover_questao(request, pk):
     try:
         QuestaoObjetiva.objects.get(id = pk).delete()
-        return render_to_response ('private/mensagem_generica.html',{'link':'/questoes', 'msg':'Questão apagada com sucesso!'})
+        return render_to_response ('private/mensagem_generica.html',{'link':'/questoes', 'msg':'Questão apagada com sucesso!'}, context_instance=RequestContext(request))
     except:
         return render_to_response('private/mensagem_generica.html', {"msg":"Não foi possível remover a questao", 'link':'/questoes'},
                                   context_instance=RequestContext(request))

@@ -1,40 +1,54 @@
-{% extends "private/questionario/base_questionario.html" %}
+{% extends "private/questionarios.html" %}
+	
+{% block main-content %}
 
-{% block content-questionario %}
-<h2>Questionário: {{questionario.nome}}</h2>
+<div class="row-fluid">
 
-<p><h4>Início</h4>
-{{questionario.hora_inicio}}
-</p>
+<div class="span12">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left">{{ questionario }}</div>
+				<div class="widget-icons pull-right">
+					<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="widget-content">
+				<div class="padd">
+					<p>Inicio: {{ questionario.hora_inicio }}</p>
+					<p>Fim: {{ questionario.hora_fim }}</p>
+					<br>
+					<p>
+					<h4>Questões</h4>
+					<ul>
+						{% for questao in questionario.get_questoes %}
+						<li><a href='/questao/detail/{{questao.uid}}/{{questao.id}}'>{{questao.nome}} ({{questao.get_tipo}}) </a></li> {% endfor %}
+					</ul>
+					</p>
 
-<p><h4>Fim</h4>
-{{questionario.hora_fim}}
-</p>
+					<h4>Tags</h4>
+					<p>
+						{% for tag in questionario.get_tags %} <span class="label label-info"> {{ tag }} </span> {% endfor %}
+					</p>
 
-<p><h4>Tags das questões envolvidas</h4>
-{{questionario.get_tags_as_string}}
-</p>
+				</div>
+				<div class="clearfix"></div>
+				<hr />
+			</div>
+			<div class="widget-foot">
+			{% if perms.core.professor %} 
+				<a href='/questionario/aplicar/{{questionario.id}}' class='btn btn-primary'>Aplicar Questionário</a> 
+				<a href="/questionario/delete/{{questionario.id}}" class="btn btn-danger"> Excluir Questionário </a> {% else %} 
+				{% if hora > questionario.hora_fim %}
+				<h3>
+					<font color="red">Data limite de submissão atingida</font>
+				</h3>
+				{% else %} 
+					<a href='/questionario/submeter/{{questionario.id}}' class='btn'>Submeter Questionário</a> 
+				{% endif %} 
+			{% endif %}
+			</div>
+		</div>
+	</div>
 
-<p><h4>Questões</h4>
-	<ul>
-	{% for questao in questionario.get_questoes %}
-		<li><a href='/questao/detail/{{questao.uid}}/{{questao.id}}'>{{questao.nome}} ({{questao.get_tipo}}) </a></li>
-	{% endfor %}
-	</ul>
-</p>
-
-<p>
-	{% if perms.core.professor %}
-		<a href='/questionario/aplicar/{{questionario.id}}'>Aplicar Questionário</a> 
-	{% else %}
-		{% if hora > questionario.hora_fim %}
-			<h3> <font color="red">Data limite de submissão atingida</font> </h3> 
-		{% else %}
-			<a href='/questionario/submeter/{{questionario.id}}'>Submeter Questionário</a>
-		{% endif %}		 
-	{% endif %}
-</p>
-<p>
-<a href="/questionarios"><p align="right">Voltar</p></a>
-</p>
 {% endblock %}

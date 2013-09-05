@@ -42,10 +42,10 @@ class GrupoForm(forms.ModelForm):
         
 class GrupoAddAlunosForm(forms.Form):
         
-    def __init__(self, disciplina, filtro, *args, **kwargs):
+    def __init__(self, grupo, *args, **kwargs):
         super(GrupoAddAlunosForm, self).__init__(*args, **kwargs)
-        matriculados = disciplina.alunos.all()
-        disponiveis = [aluno for aluno in Aluno.objects.all() if aluno not in matriculados and filtro in aluno.nome]
+        matriculados = grupo.alunos.all()
+        disponiveis = [aluno for aluno in Aluno.objects.all() if aluno not in matriculados]
         self.fields["alunos_disponiveis"] = forms.MultipleChoiceField(
                                 choices=[('%d' % (aluno.id), "%s - %s" % (aluno.matricula, aluno)) for aluno in disponiveis])
 

@@ -33,7 +33,9 @@ def home(request):
     @return: Página principal
     @rtype: HttpResponse
     '''
-    return render_to_response('private/index.html', context_instance=RequestContext(request))
+    if request.user.has_perm("core.professor"):
+        return render_to_response('private/index.html', context_instance=RequestContext(request))
+    return render_to_response('private/aluno/index.html', context_instance=RequestContext(request))
 
 @permission_required("core.professor", login_url="/home")
 def cadastro(request):
@@ -207,12 +209,18 @@ def grupo(request):
     form = GrupoForm();
     return render_to_response("private/grupo/list.html", {'object_list': object_list, 'form': form},
                               context_instance=RequestContext(request));
+                              
+@permission_required("core.professor", login_url="/home")
+def show_grupo(request, pk):
+    grupo = Grupo.objects.get(pk=pk);
+    form = GrupoAddAlunosForm(grupo);
+    return render_to_response("private/grupo/grupo.html", {'grupo': grupo, 'form': form}, context_instance=RequestContext(request));
     
 @permission_required("core.professor", login_url="/home")
-def adicionar_alunos_grupo(request, pk, filtro=""):
+def adicionar_alunos_grupo(request, pk):
     grupo = Grupo.objects.get(pk=pk)
     if request.method == 'POST':
-        form = GrupoAddAlunosForm(grupo, filtro, request.POST)
+        form = GrupoAddAlunosForm(grupo, request.POST)
         if form.is_valid():
             with transaction.commit_on_success():
                 alunos = form.cleaned_data["alunos_disponiveis"]
@@ -220,12 +228,11 @@ def adicionar_alunos_grupo(request, pk, filtro=""):
                     aluno = Aluno.objects.get(id = aluno_id)
                     grupo.alunos.add(aluno)
                 grupo.save()
-                return HttpResponseRedirect('/grupo/list')
+                return HttpResponseRedirect('/grupo')
             return HttpResponse('Deu Erro.')
     else:
-        form = GrupoAddAlunosForm(grupo, filtro)
-         
-    return render_to_response('private/grupo/adicionar_alunos_form.html', {'form':form, 'grupo':grupo}, 
-                              context_instance=RequestContext(request))
+        form = GrupoAddAlunosForm(grupo)
+    
+    return render_to_response('private/grupo/grupo.html', {'form':form, 'grupo':grupo}, context_instance=RequestContext(request))
 
     

@@ -1,0 +1,93 @@
+{% extends "private/base.html" %}
+
+{% block sidebar %}
+
+<li><a href="/"><i class="icon-home"></i>Home</a>
+<li><a href="/questionarios"><i class="icon-list-alt"></i>Questionarios 
+<li><a href="/submissoes" class="open"><i class="icon-reply"></i>Submissões</a>
+{% if perms.core.professor %}
+<li><a href="/questoes"><i class="icon-question-sign"></i>Questões</a>
+<li><a class="has_sub"><i class=icon-group></i>Cadastros
+<span class="pull-right"> <i class="icon-chevron-right"></i></span></a>
+	<ul>
+		<li><a href="/aluno">Alunos</a></li>
+		<li><a href="/professor">Professores</a></li>
+		<li><a href="/grupo">Grupos</a></li>
+	</ul></li>
+{% endif %}
+{% endblock %} 
+
+
+
+{% block content-title %}  Submissões {% endblock %}
+
+
+{% block content-bread %}
+
+<a href="/"><i class="icon-home"></i> Home</a>
+<!-- Divider -->
+<span class="divider">/</span>
+<a href="#" class="bread-current">Submissões</a>
+
+{% endblock %}
+
+
+{% block main-content %}
+
+<div class="row-fluid">
+
+<div class="span12">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left"> Submissões </div>
+				<div class="widget-icons pull-right">
+					<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="widget-content">
+				<div class="padd">
+					<div class="grupos">
+						{% if submissoes %}
+						<table class="table table-striped table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>Questionário</th>
+								<th>data</th>
+								<th>aluno</th>
+								<th>Nota</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for submissao in submissoes %}
+						<tr onclick="document.location = '/submissao/detail/{{ submissao.id }}';">
+                          <td>{{ submissao.questionario }}</td>
+                          <td>{{ submissao.data_hora }}</td>
+                          <td>{{ submissao.aluno }}</td>
+                          
+                          {% if submissao.nota %}
+                          	<td>{{ submissao.nota }}</td>
+                          {% else %}
+                          	<td>Aguardando Avaliação</td>
+                          {% endif %}
+                          
+                        </tr>
+						{% endfor %}
+						</tbody>
+						</table>
+					{% else %}
+						<i> Nenhuma Submissão.</i>
+					{% endif %}
+					</div>				
+				</div>
+				<div class="clearfix"></div>
+				<hr />
+				</div>
+			<div class="widget-foot">
+			
+			</div>
+		</div>
+	</div>
+
+</div>
+{% endblock %}

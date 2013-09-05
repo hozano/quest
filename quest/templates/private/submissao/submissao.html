@@ -1,69 +1,72 @@
-{% extends "private/submissao/base_submissao.html" %}
+{% extends "private/submissao/submissoes.html" %}
 
-{% block menu %}
+{% block main-content %}
+<div class="row-fluid">
 
-<div id="templatemo_menu_wrapper">
-    <div id="templatemo_menu">
-        
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/submissoes" class="current">Submissões</a></li>
-            <li><a href="/questionarios">Questionários</a></li>
-           
-            {% if perms.core.professor %}
-            	<li><a href="/questoes">Questões</a></li>
-            	<li><a href="/cadastros">Cadastros</a></li>
-            {% endif %}
-            
-            <li><a href="/logout">Sair</a></li>
-        </ul>    	
-    
-    </div> <!-- end of templatemo_menu -->
-</div>
+<div class="span12">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left">Submissão</div>
+				<div class="widget-icons pull-right">
+					<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="widget-content">
+				<div class="padd">
+					<h2>Submissão para {{submissao.questionario}}</h2>
 
-{% endblock %}
+					<p>
+					<h5>Quando?</h5>
+					{{submissao.data_hora}}
+					</p>
 
-{% block content %}
-<div id="templatemo_content_wrapper">
-<div id="templatemo_content_full">
-	<div class="content_box_full">
-		{% block content-box %}
-			<h2>Submissão para {{submissao.questionario}}</h2>
-			
-			<p><h4>Quando?</h4>
-			{{submissao.data_hora}}
-			</p>
-			
-			<p><h4>Quem?</h4>
-			{{ submissao.aluno }}
-			</p>
-			
-			<p><h4>Respostas</h4>
-				{% for resposta in submissao.get_respostas %}
-					<h3> {{ resposta.questao.enunciado|safe }} </h3>
-						<p>Resposta dada:</p>  <p>{{ resposta|safe }}</p>
-						
-						{% if perms.core.professor %}
-							<br>
-							<p>Resposta esperada: </p> <p>{{ resposta.questao.get_resposta|safe }}</p>
-						{% endif %}
-						
+					<p>
+					<h5>Quem?</h5>
+					{{ submissao.aluno }}
+					</p>
 					<br>
-				{% endfor %}
-			</p>
-			<p>
-			{% if perms.core.professor %}
-				nota: {{ submissao.nota }} </br>
-				<a href='/submissoes/pontuar/{{submissao.id}}'>Avaliar</a> 
-			{% endif %}
-			</p>
-			<p align=right><a href="/submissoes"> Voltar </a></p>
-		{% endblock %}
-		
-		 </div><div class="content_box_bottom_full"></div>
-    </div> <!-- end of content -->
+					<p>
+					<h4>Respostas:</h4><br>
+					{% for resposta in submissao.get_respostas %}
+					<h6>{{ resposta.questao.enunciado|safe }}</h6>
+					<p>Resposta dada:</p>
+					<p>{{ resposta|safe }}</p>
 
-    <div class="cleaner"></div>
+					{% if perms.core.professor %} <br>
+					<p>Resposta esperada:</p>
+					<p><i>{{ resposta.questao.get_resposta|safe }}</i></p>
+					{% endif %} 
+					<br> 
+					{% endfor %}
+					</p>
+					
+					<h6>Nota:</h6>
+					{% if submissao.nota %}
+						{{ submissao.nota }}
+					{% else %}
+						<i>Aguardando Avaliação.</i>
+					{% endif %}
+				</div>
+				<div class="clearfix"></div>
+				<hr />
+			</div>
+			<div class="widget-foot">
+				{% if perms.core.professor %}
+				<form name='generic_form' action="/submissoes/pontuar/{{submissao.id}}" enctype="multipart/form-data" method="post"> {% csrf_token %}
+					<table>
+						<th id="form">Nota:</th>
+						<tr>
+							<td id="form"> <input id={{submissao.id}} type="number" name='pts'/></td>
+						</tr>
+					</table>
+					<button type="submit" class="btn btn-primary">Avaliar</b> 
+				</form>
+				{% endif %}
+			</div>
+		</div>
+	</div>
 
 </div>
+
 {% endblock %}

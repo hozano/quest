@@ -1,4 +1,4 @@
-# coding:utf-8
+# encoding:utf-8
 from django import forms
 from quest.questao.models import Questao, Questionario, Submissao
 from tinymce import models as tinymce_models
@@ -16,7 +16,7 @@ class QuestaoForm(forms.ModelForm):
 class QuestionarioForm(forms.ModelForm):
     class Meta:
         model = Questionario
-        exclude = ['criador', 'disciplinas']
+        exclude = ['criador', 'disciplinas', 'grupos']
     
     def clean_hora_fim(self):
         inicio = self.cleaned_data["hora_inicio"]
@@ -25,7 +25,7 @@ class QuestionarioForm(forms.ModelForm):
         if inicio < fim:
             return fim
         else:
-            raise forms.ValidationError("O formulário deve finalizar depois da data inicial.")
+            raise forms.ValidationError("O formulario deve finalizar depois da data inicial.")
         
     
     def __init__(self, *args, **kwargs):

@@ -85,7 +85,8 @@ class Submissao(models.Model):
     data_hora = models.DateTimeField(auto_now_add=True)
     questionario = models.ForeignKey(Questionario)
     aluno = models.ForeignKey(Aluno)
-    nota = models.IntegerField(null=True)
+    nota = models.DecimalField(null=True, decimal_places=2, max_digits=5)
+    observacoes = models.TextField()
     
     def field_list(self):
         return [('Questionário', self.questionario), ('Hora', self.data_hora)]

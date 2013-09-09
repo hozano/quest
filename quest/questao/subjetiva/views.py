@@ -25,8 +25,12 @@ def criar_questao(request):
                                       context_instance=RequestContext(request))
 @login_required
 def show_questao(request, pk):
-    objeto = QuestaoSubjetiva.objects.get(id = pk)
-    return render_to_response('private/questao/subjetiva/show.html', {'questao':objeto}, 
+    questao = QuestaoSubjetiva.objects.get(id = pk)
+    form = QuestaoSubjetivaForm(initial={'nome':questao.nome, 'enunciado':questao.enunciado,'resposta':questao.resposta ,
+                                        'criador':questao.criador, 'data_criacao':questao.data_criacao, 
+                                        'nivel_estatico':questao.nivel_estatico, 'nivel_dinamico':questao.nivel_dinamico, 
+                                        'questionarios':questao.questionarios, 'tags':questao.get_tags_as_string})
+    return render_to_response('private/questao/subjetiva/show.html', {'questao':questao, 'form':form}, 
                               context_instance=RequestContext(request))   
 
 @permission_required("core.professor", login_url="/home")
@@ -47,7 +51,8 @@ def atualizar_questao(request, pk):
                 query.questionarios = questao.questionarios.all()
                 query.tags = form.cleaned_data['tags']
                 query.save()
-                return render_to_response ('private/mensagem_generica.html',{'link':'/questoes', 'msg':'Questão alterada com sucesso!'})
+                return render_to_response ('private/mensagem_generica.html',{'link':'/questoes', 'msg':'Questão alterada com sucesso!'},
+                                           context_instance = RequestContext(request))
 
     form = QuestaoSubjetivaForm(initial={'nome':questao.nome, 'enunciado':questao.enunciado,'resposta':questao.resposta ,
                                         'criador':questao.criador, 'data_criacao':questao.data_criacao, 
@@ -62,7 +67,8 @@ def atualizar_questao(request, pk):
 def remover_questao(request, pk):
     try:
         QuestaoSubjetiva.objects.get(id = pk).delete()
-        return render_to_response ('private/mensagem_generica.html',{'link':'/questoes', 'msg':'Questão apagada com sucesso!'})
+        return render_to_response ('private/mensagem_generica.html',{'link':'/questoes', 'msg':'Questão apagada com sucesso!'},
+                                   context_instance=RequestContext(request))
     except:
         return render_to_response('private/mensagem_generica.html', {"msg":"Não foi possível remover a questao", 'link':'/questoes'},
                                   context_instance=RequestContext(request))

@@ -1,0 +1,76 @@
+{% extends "private/questoes.html" %}
+
+{% block hidden %}
+
+<div id="edit" class="modal hide fade" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Editar {{ questao }}</h3>
+	</div>
+	<form name='generic_form' action="/questao/modificar/{{ questao.uid }}/{{ questao.id }}"
+		enctype="multipart/form-data" method="post">
+		{% csrf_token %}
+		<div class="modal-body">{{ form }} {{ formset }}</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
+			<button type="submit" class="btn btn-primary">Salvar</button>
+		</div>
+	</form>
+</div>
+
+{% endblock %}
+
+{% block main-content %}
+<div class="row-fluid">
+
+<div class="span{% block spantype %}12{% endblock %}">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left"> {{ questao }} </div>
+				<div class="widget-icons pull-right">
+					<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="widget-content">
+				<div class="padd">
+					<h4> Tipo: {{ questao.get_tipo }} </h4>
+					<br>
+					<h4> Nivel: {{ questao.nivel_estatico }} </h4>
+					<br>
+					{% block show-questao %} {% endblock %}
+					<br>
+					
+					<h4> Questionários </h4>
+					{% if questao.questionarios.all %}
+					{% for questionario in questao.questionarios.all %}
+						{{ questionario }} <br>
+					{% endfor %}
+					{% else %}
+						<i>A questão não está sendo usada em nenhum questionário</i>
+					{% endif %}
+					<br>
+					
+					<h4>Tags</h4>
+					<p>
+						{% for tag in questao.get_tags %}
+							<span class="label label-info"> {{ tag }} </span>
+						{% endfor %}
+					</p>     
+				</div>
+				<div class="clearfix"></div>
+				<hr />
+				</div>
+			<div class="widget-foot">
+			{% if perms.core.professor %}
+				<a href="#edit" data-toggle="modal" class="btn btn-primary"> Modificar </a>
+				<a href="/questao/deletar/{{questao.uid}}/{{questao.id}}" class="btn btn-danger"> Excluir </a>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

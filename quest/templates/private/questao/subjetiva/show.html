@@ -1,24 +1,14 @@
-{% extends "private/questao/base_show_questao.html" %}
+{% extends "private/questao/show.html" %}
 
-{% block content-questao %}
 
-<h2>Questão: {{questao.nome}}</h2>
+{% block show-questao %}
 
-<p><h4>Tipo</h4>
-Questão {{questao.get_tipo}}
-</p>
-
-<p><h4>Enunciado</h4>
-{{questao.enunciado|safe}}
-</p>
-
+<h4>Enunciado</h4> 
+<p> {{questao.enunciado|safe}} </p>
+<br>
+						
 <p><h4>Resposta</h4>
 {{questao.resposta|safe}}
 </p>
-
-<p><h4>Tags</h4>
-{% if questao.get_tags_as_string %}{{questao.get_tags_as_string}}{% else %} <i>Nenhuma tag associada.</i> {% endif %}
-</p>
-
-
+	
 {% endblock %}

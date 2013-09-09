@@ -1,0 +1,108 @@
+{% extends "private/index.html" %}
+
+ {% block navigator %} {% endblock %}
+
+{% block header-button %} {% endblock %} 
+
+{% block header-data %} {% endblock %} 
+
+{% block content-title %} {% endblock %} 
+
+{% block content-bread %} {% endblock %} 
+
+{% block main-content %}
+
+<div class="row-fluid">
+	
+	<!--  Grupos -->
+	<div class="span6">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left">Meus Grupos</div>
+				<div class="widget-icons pull-right">
+					<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+
+			<div class="widget-content">
+				{% if user.aluno.get_grupos %}
+				<table class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>Nome</th>
+							<th>Código</th>
+							<th>Membros</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for grupo in user.aluno.get_grupos %}
+						<a href="/questao/detail/{{ grupo.id }}/">
+							<tr>
+								<td>{{ grupo.nome }}</td>
+								<td>{{ grupo }}</td>
+								<td>{{ grupo.matriculados }}</td>
+							</tr>
+						</a> 
+						{% endfor %}
+					</tbody>
+				</table>
+
+				{% else %}
+				<div class="padd">
+					<i>Você ainda não participa de grupos.</i>
+				</div>
+				<div class="clearfix"></div>
+				<hr />
+				{% endif %}
+			</div>
+			<div class="widget-foot">
+				<i>Lista de Grupos</i>
+			</div>
+		</div>
+	</div>
+
+	<!--  Questionários -->
+	<div class="span6">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left">Questionários</div>
+				<div class="widget-icons pull-right">
+					<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+
+			<div class="widget-content">
+				<table class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>Nome</th>
+							<th>Data Abertura</th>
+							<th>Data Limite</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for grupo in user.aluno.get_grupos %} 
+							{% for questionario in grupo.questionario_set.all %}	
+								<tr>
+									<td>{{ questionario.nome }}</td>
+									<td>{{ questionario.hora_inicio }}</td>
+									<td>{{ questionario.hora_fim }}</td>
+								</tr> 	
+							{% endfor %}
+						{% endfor %}
+					</tbody>
+				</table>
+
+				<div class="clearfix"></div>
+				<hr />
+			</div>
+			<div class="widget-foot">
+				<i>Lista de Questionários</i>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

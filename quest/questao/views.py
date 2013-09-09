@@ -155,6 +155,9 @@ def submeter_questionario(request, pk):
         forms = SubmissaoFormSet(request.POST)
         forms.forms = make_forms_from_questionario(questionario, request.POST)
         if forms.is_valid():
+            old = Submissao.objects.filter(questionario = questionario, aluno = request.user.aluno)
+            if old:
+                old.delete()
             submissao = Submissao(questionario = questionario, aluno = request.user.aluno)
             submissao.save()
             for form in forms:
@@ -171,15 +174,12 @@ def submeter_questionario(request, pk):
 
 @permission_required("core.professor", login_url="/home")
 def pontuar_submissao(request, pk):
-    print "Avaliando"
     submissao = Submissao.objects.get(id=pk)
     if request.method == 'POST':
-        print "Atribuindo nota"
         nota = request.POST.get('pts')
         print nota
         submissao.nota = nota
         submissao.save()
-        print "Salvo"
         return HttpResponseRedirect('/submissoes')
     return render_to_response('private/submissao/submissao.html',{"submissao":submissao}, context_instance=RequestContext(request))
         

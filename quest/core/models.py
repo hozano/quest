@@ -54,7 +54,7 @@ class Grupo(models.Model):
     about = models.TextField()
     
     def __unicode__(self):
-        return self.nome
+        return self.codigo
     
     def field_list(self):
         return [('Codigo', self.codigo), ('Nome', self.nome), ('Professor', self.professor)]

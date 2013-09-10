@@ -6,9 +6,11 @@
 <h4>Enunciado</h4> 
 <p> {{questao.enunciado|safe}} </p>
 <br>
-						
+			
+{% if perms.core.professor %}			
 <p><h4>Resposta</h4>
 {{questao.resposta|safe}}
 </p>
+{% endif %}
 	
 {% endblock %}

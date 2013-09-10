@@ -3,7 +3,6 @@
 {% block main-content %}
 
 <div class="row-fluid">
-
 	<div class="span12">
 		<div class="widget">
 			<div class="widget-head">
@@ -21,21 +20,16 @@
 						Início: {{questionario.hora_inicio}}<br /> 
 						Fim: {{questionario.hora_fim}}
 					</p>
-					<br />
+					<br/>
 
-					<form name='generic_form' action="" enctype="multipart/form-data"
-						method="post">
+					<form name='generic_form' action="" enctype="multipart/form-data" method="post">
 						{% csrf_token %}
-
-						<p>{% for form in forms %}
-							<p>
+						{% for form in forms %}
 							<h2>Questão {{forloop.counter}}</h2>
-							<h3>{{form.questao.enunciado|safe}}</h3>
-							{% if form.errors %} Você tem que indicar uma resposta. <br />{% endif %} 
+							<h5>{{form.questao.enunciado|safe}}</h5>
 								{{ form }}
-							</p>
+							<br>
 						{% endfor %}
-						</p>
 
 						<p>
 							<br/> <input type='submit' value='Enviar' />
@@ -49,7 +43,6 @@
 			<div class="widget-foot"></div>
 		</div>
 	</div>
-
 </div>
 
 {% endblock %} 

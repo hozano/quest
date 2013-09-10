@@ -59,8 +59,7 @@ def atualizar_questao(request, pk):
                         alternativa.alternativa = form_dict['alternativa']
                         alternativa.valor = form_dict['valor']
                         alternativa.save()
-
-                return render_to_response ('private/mensagem_generica.html',{'link':'/questoes', 'msg':'Questão alterada com sucesso!'})
+                return HttpResponseRedirect('/questao/detail/%s/%s' % (questao.uid(), questao.id))
 
     form = QuestaoVFForm(initial={'nome':questao.nome, 'enunciado':questao.enunciado, 
                                         'criador':questao.criador, 'data_criacao':questao.data_criacao, 
@@ -69,20 +68,27 @@ def atualizar_questao(request, pk):
 
     queryset= AlternativaVFQuestao.objects.filter(questao = questao).values()
     formset = AlternativaVFFormSet(initial=queryset)
-    return render_to_response('private/questao/vf/form.html', {'questao':questao, 'form':form, 'formset':formset}, 
+    return render_to_response('private/questao/vf/show.html', {'questao':questao, 'form':form, 'formset':formset}, 
                               context_instance=RequestContext(request))
 
 @login_required
 def show_questao(request, pk):
-    objeto = QuestaoVF.objects.get(id = pk)
-    return render_to_response('private/questao/vf/show.html', {'questao':objeto}, 
+    questao = QuestaoVF.objects.get(id = pk)
+    form = QuestaoVFForm(initial={'nome':questao.nome, 'enunciado':questao.enunciado, 
+                                        'criador':questao.criador, 'data_criacao':questao.data_criacao, 
+                                        'nivel_estatico':questao.nivel_estatico, 'nivel_dinamico':questao.nivel_dinamico, 
+                                        'questionarios':questao.questionarios, 'tags':questao.get_tags_as_string})
+    
+    queryset= AlternativaVFQuestao.objects.filter(questao = questao).values()
+    formset = AlternativaVFFormSet(initial=queryset) 
+    return render_to_response('private/questao/vf/show.html', {'questao':questao, 'form':form, 'formset':formset}, 
                               context_instance=RequestContext(request))
     
 @permission_required("core.professor", login_url="/home")
 def remover_questao(request, pk):
     try:
         QuestaoVF.objects.get(id = pk).delete()
-        return render_to_response ('private/mensagem_generica.html',{'link':'/questoes', 'msg':'Questão apagada com sucesso!'})
+        return render_to_response ('private/mensagem_generica.html',{'link':'/questoes', 'msg':'Questão apagada com sucesso!'},  context_instance=RequestContext(request))
     except:
         return render_to_response('private/mensagem_generica.html', {"msg":"Não foi possível remover a questao", 'link':'/questoes'},
                                   context_instance=RequestContext(request))

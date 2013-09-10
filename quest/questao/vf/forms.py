@@ -39,12 +39,13 @@ class RespostaVFForm(forms.ModelForm):
         exclude = ["submissao", "questao", "resposta"]
          
     def __init__(self, questao, *args, **kwargs):
+        kwargs['label_suffix'] = ""
         super(RespostaVFForm, self).__init__(*args, **kwargs)
         self.questao = questao
         alternativas = list(self.questao.alternativavfquestao_set.all())
         random.shuffle(alternativas)
         for alternativa in alternativas:
-            self.fields['vf-%s' % alternativa.id] = forms.BooleanField(label=alternativa.alternativa, initial=False, required=False)
+            self.fields['vf-%s' % alternativa.id] = forms.BooleanField(label=unicode(alternativa.alternativa), initial=False, required=False)
             
     def save(self, commit = True):
         obj = super(RespostaVFForm, self).save(commit)
@@ -58,10 +59,10 @@ class RespostaVFForm(forms.ModelForm):
     def as_table(self):
         "Returns this form rendered as HTML <tr>s -- excluding the <table></table>."
         return self._html_output(
-            normal_row = u'<tr%(html_class_attr)s><th>%(field)s</th><td>%(errors)s%(label)s%(help_text)s</br></td></tr>',
-            error_row = u'<tr><td colspan="2">%s</td></tr>',
+            normal_row = u'<tr%(html_class_attr)s><td>%(field)s</td><td>%(errors)s %(label)s %(help_text)s</td></tr>',
+            error_row = u'<tr><td colspan="3">%s</td></tr>',
             row_ender = u'</td></tr>',
             help_text_html = u'<br /><span class="helptext">%s</span>',
-            errors_on_separate_row = False)
+            errors_on_separate_row = True)
             
 QuestaoVF.RespostaForm = RespostaVFForm

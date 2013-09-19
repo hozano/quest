@@ -10,6 +10,7 @@ class QuestaoObjetiva(Questao):
     
     def get_resposta(self):
         return AlternativaQuestao.objects.get(questao=self, valor=True)
+        
 
 class AlternativaQuestao(models.Model):
     questao = models.ForeignKey(QuestaoObjetiva)
@@ -31,3 +32,9 @@ class RespostaObjetiva(Resposta):
         
     def __unicode__(self):
         return self.resposta
+    
+    def auto_avaliar(self):
+        if self.questao.get_resposta().alternativa == self.resposta:
+            return 1
+        return 0
+        

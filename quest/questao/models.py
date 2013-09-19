@@ -37,7 +37,7 @@ class Questionario(models.Model):
     
     def __unicode__(self):
         return self.nome
-
+    
 class QuestaoManager(models.Manager):pass
 
 class Questao(models.Model):
@@ -78,8 +78,8 @@ class Questao(models.Model):
     def get_respostaForm(self, **kwargs):
         return self.RespostaForm(self, **kwargs)
     
-    
 tagging.register(Questao)
+
 
 class Submissao(models.Model):
     data_hora = models.DateTimeField(auto_now_add=True)
@@ -105,6 +105,12 @@ class Resposta(models.Model):
     submissao = models.ForeignKey(Submissao)
     class Meta:
         abstract = True
+    
+    def auto_avaliar(self):
+        """
+            Deve ser implementado pelas subclasses que são auto avaliaveis.
+        """
+        return None
         
 import os, sys
 QUESTOES_PATH = os.path.dirname(os.path.abspath(__file__))

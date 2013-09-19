@@ -27,7 +27,6 @@ class QuestionarioForm(forms.ModelForm):
         else:
             raise forms.ValidationError("O formulario deve finalizar depois da data inicial.")
         
-    
     def __init__(self, *args, **kwargs):
         from quest.questao.models import get_questoes
         super(QuestionarioForm,self).__init__(*args,**kwargs)

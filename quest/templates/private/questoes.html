@@ -89,9 +89,9 @@
 						</thead>
 						<tbody>
 						{% for questao in modulo.classe.meta.objects.all %}
-						<tr onclick="document.location = '/questao/detail/{{ questao.uid}}/{{ questao.id }}';">
-                          <td>{{ questao }}</td>
-                          <td>{{ questao.modulo.tipo_string }}</td>
+						<tr>
+                          <td><a href='/questao/detail/{{ questao.uid}}/{{ questao.id }}'>{{ questao }}</a></td>
+                          <td>{{ questao.criador.get_full_name }}</td>
                           <td>{{ questao.nivel_estatico }}</td>
                           <td>
                           {% for tag in questao.get_tags %}

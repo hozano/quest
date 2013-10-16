@@ -1,7 +1,9 @@
 {% extends "private/cadastros.html" %}
 
+{% block header-button %}  {% endblock %} 
+{% block header-data %} {% endblock %} 
 {% block content-title %} 
-<img src="{{STATIC_URL}}macadmin/img/user.jpg"> Professor: {{ professor }}
+ Professor: {{ professor }}
 
  {% endblock %}
  
@@ -41,7 +43,7 @@
                       </thead>
                       <tbody>
                       {% for questao in professor.get_questoes_criadas %} 
-                        <tr onclick="document.location = '/questao/detail/{{ questao.uid}}/{{ questao.id }}';">
+                        <tr class="linked" onclick="linkTo('/questao/detail/{{ questao.uid}}/{{ questao.id }}')">
                           <td>{{ questao }}</td>
                           <td>{{ questao.modulo.tipo_string }}</td>
                           <td>{{ questao.nivel_estatico }}</td>
@@ -76,15 +78,30 @@
 			</div>
 			
 			<div class="widget-content">
+				<div class="padd">
 				{% if professor.get_grupos %}
-				
+					{% for grupo in professor.get_grupos %}
+						<div>				
+							<h5 class=icon-group> {{ grupo.nome }}  </h5>
+
+							<p>{{ grupo.about }}</p>
+
+							<a href="/grupo/detail/{{grupo.id}}"
+								class="btn btn-info btn-mini"><i class="icon-file-alt"></i> Ver
+								Detalhes</a> <a href="mailto:{{grupo}}"
+								class="btn btn-mini"><i class="icon-envelope-alt"></i>Enviar Mensagem</a>
+							<div class="clearfix"></div>
+						</div>
+
+						<hr />
+					{% endfor %}
 				{% else %}
-					<div class="padd">
 						Nenhuma Grupo registrado.
-					</div>
+					
+				{% endif %}
+				</div>
 					<div class="clearfix"></div>
 					<hr />
-				{% endif %}
 			</div>
 			<div class="widget-foot">Grupos do Professor {{ professor }}</div>
 		</div>

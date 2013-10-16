@@ -1,5 +1,11 @@
 {% extends "private/base.html" %}
 
+ {% block navigator %} {% endblock %}
+ 
+ {% block header-button %} {% endblock %} 
+ 
+ {% block header-data %} {% endblock %}
+ 
 {% block hidden %}
 
 {% for modulo in modulos %}
@@ -89,14 +95,14 @@
 						</thead>
 						<tbody>
 						{% for questao in modulo.classe.meta.objects.all %}
-						<tr>
-                          <td><a href='/questao/detail/{{ questao.uid}}/{{ questao.id }}'>{{ questao }}</a></td>
+						<tr class="linked" onclick="linkTo('/questao/detail/{{ questao.uid}}/{{ questao.id }}')">						
+                          <td>{{ questao }}</td>
                           <td>{{ questao.criador.get_full_name }}</td>
                           <td>{{ questao.nivel_estatico }}</td>
                           <td>
-                          {% for tag in questao.get_tags %}
-                          <span class="label label-info"> {{ tag }} </span>
-                          {% endfor %}
+                           {% for tag in questao.get_tags %}
+                          	<span class="label label-info"> {{ tag }} </span>
+                          {% endfor %} 
                           </td>
                         </tr>
 						{% endfor %}
@@ -111,7 +117,7 @@
 				<hr />
 				</div>
 			<div class="widget-foot">
-			<button href="#{{ modulo.uid }}" data-toggle="modal" class="btn"> <i class="icon-plus-sign"></i> Criar {{ modulo.tipo_string }}</button> </div>
+			<a href="/questao/create/{{ modulo.uid }}"  class="btn"> <i class="icon-plus-sign"></i> Criar {{ modulo.tipo_string }}</a></div>
 		</div>
 	</div>
 	{% if forloop.last %}

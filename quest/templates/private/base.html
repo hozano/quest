@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <!-- Title and other stuffs -->
-<title>Dashboard - Quest?</title>
+<title> Quest?</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="keywords" content="">
@@ -43,6 +43,17 @@
 
 <!-- Favicon -->
 <link rel="shortcut icon" href="{{STATIC_URL}}macadmin/img/favicon/favicon.png">
+
+<style>
+.linked {
+    color:#026b9c;
+  }
+  .linked:hover {
+    color: #003f5c;
+	text-decoration: none;
+	cursor: pointer;
+  }
+</style>
 {% block extra-head %} {% endblock %}
 </head>
 
@@ -131,8 +142,14 @@
 								{{user.get_full_name}} <b class="caret"></b> </a> 
 							<!-- Dropdown menu -->
 							<ul class="dropdown-menu">
-								<li><a href="#"><i class="icon-user"></i> Perfil</a></li>
-								<li><a href="#"><i class="icon-cogs"></i> Configurações</a></li>
+								<li>
+								{% if perms.core.professor %}
+								<a href="/professor/detail/{{user.professor.id}}">
+								{% else %}
+								<a href="/aluno/detail/{{user.aluno.id}}">
+								{% endif %}
+								<i class="icon-user"></i>Perfil</a></li>
+								<!--  <li><a href="#"><i class="icon-cogs"></i> Configurações</a></li> -->
 								<li><a href="/logout"><i class="icon-off"></i> Sair</a></li> 
 								{% block extra-useropt %} {% endblock %}
 							</ul></li>
@@ -1063,8 +1080,8 @@
 	<script src="{{STATIC_URL}}macadmin/js/jquery.flot.pie.js"></script>
 	<script src="{{STATIC_URL}}macadmin/js/jquery.flot.stack.js"></script>
 
-	<!-- jQuery Notification - Noty -->
-	<script src="{{STATIC_URL}}macadmin/js/jquery.noty.js"></script>
+	<!-- jQuery Notification - Noty 
+	<script src="{{STATIC_URL}}macadmin/js/jquery.noty.js"></script>-->
 	<!-- jQuery Notify -->
 	<script src="{{STATIC_URL}}macadmin/js/themes/default.js"></script>
 	<!-- jQuery Notify -->
@@ -1078,7 +1095,7 @@
 
 	<script src="{{STATIC_URL}}macadmin/js/sparklines.js"></script>
 	<!-- Sparklines -->
-	<script src="js/jquery.cleditor.min.js"></script>
+	<script src="{{STATIC_URL}}macadmin/js/jquery.cleditor.min.js"></script>
 	<!-- CLEditor -->
 	<script src="{{STATIC_URL}}macadmin/js/bootstrap-datetimepicker.min.js"></script>
 	<!-- Date picker -->
@@ -1092,6 +1109,13 @@
 	<!-- Custom codes -->
 	<script src="{{STATIC_URL}}macadmin/js/charts.js"></script>
 	<!-- Custom codes -->
+	
+	<script type="text/javascript">
+		function linkTo(url) {
+			document.location.href = url;			
+		}
+	</script>
+
 	
 	{% block extra-js %} {% endblock %}
 

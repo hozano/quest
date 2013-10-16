@@ -34,6 +34,17 @@ class RespostaVF(Resposta):
     class Meta:
         app_label = "questao"
         
+    def auto_avaliar(self):
+        alternativas = AlternativaVFQuestao.objects.filter(questao = self.questao)
+        div = 1.0/len(alternativas)
+        res = 0
+        respostas = self.resposta.replace("(","").replace(")","").split(";");
+        for r in respostas:
+            valor, alternativa = r.split(":")
+            if(len(alternativas.filter(alternativa=alternativa, valor=valor))):
+                res += div
+        return res
+        
     def __unicode__(self):
         res = self.resposta.split(";")
         result = ""

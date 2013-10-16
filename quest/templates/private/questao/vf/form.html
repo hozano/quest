@@ -1,4 +1,63 @@
-{% extends "private/questao/base_questao.html" %}
+{% extends "private/questoes.html" %}
+
+{% block main-content %}
+
+<div class="row-fluid">
+
+<div class="span12">
+	<div class="widget">
+		<div class="widget-head">
+			<div class="pull-left"> Criar Questão V ou F</div>
+				<div class="widget-icons pull-right">
+					<!-- <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a> -->
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<form name='generic_form' action="" enctype="multipart/form-data" method="post"> {% csrf_token %}
+			<div class="widget-content">
+				<div class="padd">	 
+					
+					{% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %} 
+					{% for field in form.visible_fields %} {{ field.label_tag }}{% if field.is_required %}*{% endif %} <br /> 
+					{{ field }} <br /> {% if field.errors %}{{ field.errors }}{% endif %}
+					{{ field.help_text }}<br /> {% endfor %}
+
+						<h3>Alternativas</h3>
+						<table id="id_contact_info_table" border="0" cellpadding="0" cellspacing="5">
+							<thead>
+								<tr>
+									<th scope="col">Alternativa</th>
+									<th scope="col">Verdadeiro?</th>
+									<th scope="col"></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for form in formset.forms %}
+								<tr id="{{ form.prefix }}-row">
+									<td style="text-align: center;">{{ form.alternativa }} {% if form.alternativa.errors %}<br />{{form.alternativa.errors}}{% endif %}
+									</td>
+									<td align="center">{{ form.valor }}</td>
+									<td></td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+				</div>
+				
+				<div class="clearfix"></div>
+				<hr />
+				</div>
+			{{ formset.management_form }}
+        	{{formset.non_form_errors}}
+			<div class="widget-foot">
+			<button type="submit" class="btn btn-primary">Cadastrar</button> 
+			</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+{% endblock %}
 
 {% block extrahead %}
 	{{ form.media }}

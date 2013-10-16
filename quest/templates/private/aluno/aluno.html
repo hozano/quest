@@ -1,6 +1,7 @@
 {% extends "private/cadastros.html" %}
 
-
+{% block header-button %}  {% endblock %} 
+{% block header-data %} {% endblock %} 
 {% block content-title %} 
 <img src="{{STATIC_URL}}macadmin/img/user.jpg"> {{ aluno }}
 
@@ -19,7 +20,7 @@
 
 <div class="row-fluid">
 
-	<!--  Questões -->
+	<!--  Questionários -->
 	<div class="span6">
 		<div class="widget">
 			<div class="widget-head">
@@ -30,9 +31,39 @@
 				<div class="clearfix"></div>
 			</div>
 			<div class="widget-content">
-		
-					<div class="clearfix"></div>
-					<hr />
+				<div class="padd">
+					{% if aluno.get_questionarios_abertos %}
+					<table class="table table-striped table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>Nome</th>
+								<th>Inicio</th>
+								<th>Fim</th>
+								<th>Tags</th>
+							</tr>
+						</thead>
+					<tbody>
+					{% for questionario in aluno.get_questionarios_abertos %}
+						<tr class ="linked" onclick="linkTo('/questionario/detail/{{ questionario.id }}')">
+                          <td>{{ questionario }}</td>
+                          <td>{{ questionario.hora_inicio }}</td>
+                          <td>{{ questionario.hora_fim}}</td>
+                          <td>
+                    	  {% for tag in questionario.get_tags %}
+                          	<span class="label label-info"> {{ tag }} </span>
+                          {% endfor %}
+                    
+                          </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+					{% else %}
+						<i> Não existe questionários abertos.</i>
+					{% endif %}
+				</div>
+				<div class="clearfix"></div>
+				<hr />
 			</div>
 			<div class="widget-foot">Questionários Disponiveis</div>
 		</div>
@@ -51,6 +82,24 @@
 			</div>
 			
 			<div class="widget-content">
+				<div class="padd">
+					{% for grupo in aluno.get_grupos %}
+						<div>				
+							<h5 class=icon-group> {{ grupo.nome }}  </h5>
+
+							<p>{{ grupo.about }}</p>
+
+							<a href="/grupo/detail/{{grupo.id}}"
+								class="btn btn-info btn-mini"><i class="icon-file-alt"></i> Ver
+								Detalhes</a> <a href="mailto:{{grupo}}"
+								class="btn btn-mini"><i class="icon-envelope-alt"></i>Enviar Mensagem</a>
+							<div class="clearfix"></div>
+						</div>
+
+						<hr />
+						{% endfor %}
+
+				</div>
 					<div class="clearfix"></div>
 					<hr />
 			</div>
@@ -60,19 +109,51 @@
 	
 </div>
 
-{% endblock %}
-
-
-
-{% block content-box %}
-<h2>Aluno: {{ aluno }}</h2>
-
-<p><h4>Matricula</h4>
-{{aluno.matricula}}
-</p>
-
-<p><h4>email</h4>
-{{aluno.user.email}}
-</p>
+<div class="row-fluid">
+<div class="span12">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left">Submissões</div>
+				<div class="widget-icons pull-right">
+					<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="widget-content">
+				<div class="padd">
+					{% if aluno.submissao_set.all %}
+					<table class="table table-striped table-bordered table-hover">
+						<tr>
+								<th>Questionário</th>
+								<th>data</th>
+								<th>Nota</th>
+							</tr>
+					<tbody>
+					{% for submissao in aluno.submissao_set.all %}
+						<tr class="linked" onclick="linkTo('/submissao/detail/{{ submissao.id }}')">
+                          <td>{{ submissao.questionario }}</td>
+                          <td>{{ submissao.data_hora }}</td>
+                          
+                          {% if submissao.nota %}
+                          	<td>{{ submissao.nota }}</td>
+                          {% else %}
+                          	<td>Aguardando Avaliação</td>
+                          {% endif %}
+                          
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+					{% else %}
+						<i> Não existe questionários abertos.</i>
+					{% endif %}
+				</div>
+				<div class="clearfix"></div>
+				<hr />
+			</div>
+			<div class="widget-foot">Questionários Disponiveis</div>
+		</div>
+	</div>
+</div>
 
 {% endblock %}

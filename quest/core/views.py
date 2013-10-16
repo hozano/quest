@@ -34,7 +34,14 @@ def home(request):
     @rtype: HttpResponse
     '''
     if request.user.has_perm("core.professor"):
-        return render_to_response('private/index.html', context_instance=RequestContext(request))
+        professor = request.user.professor
+        questoes = professor.get_questoes_criadas()
+        grupos = professor.get_grupos()
+        questionarios = professor.get_questionarios_criados()
+        submissoes = []
+        for questionario in questionarios:
+            submissoes.extend(filter(lambda x: not x.avaliada(), questionario.submissao_set.all()))
+        return render_to_response('private/index.html', {'questoes':questoes, 'grupos':grupos, 'questionarios':questionarios, 'submissoes':submissoes}, context_instance=RequestContext(request))
     return render_to_response('private/aluno/index.html', context_instance=RequestContext(request))
 
 @permission_required("core.professor", login_url="/home")
@@ -210,7 +217,7 @@ def grupo(request):
     return render_to_response("private/grupo/list.html", {'object_list': object_list, 'form': form},
                               context_instance=RequestContext(request));
                               
-@permission_required("core.professor", login_url="/home")
+@login_required
 def show_grupo(request, pk):
     grupo = Grupo.objects.get(pk=pk);
     form = GrupoAddAlunosForm(grupo);

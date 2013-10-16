@@ -16,6 +16,7 @@ class AlternativaObjetivaForm(forms.ModelForm):
         model = AlternativaQuestao
         exclude = ['questao',]
         
+        
     def as_table(self):
         "Returns this form rendered as HTML <tr>s -- excluding the <table></table>."
         return self._html_output(

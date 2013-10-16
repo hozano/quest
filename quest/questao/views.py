@@ -96,8 +96,9 @@ def criar_questionario(request):
                     questao.questionarios.add(questionario)
                     questao.save()    
                 return HttpResponseRedirect('/questionarios')
-            return HttpResponse('Deu Erro.')
-    return HttpResponseRedirect('/questionarios')
+    else:
+        form = QuestionarioForm()
+    return render_to_response('private/questionario/form.html', {'form':form}, context_instance=RequestContext(request))
 
 def pontuar_questionario(request, pk):
     questionario = Questionario.objects.get(id=pk)
@@ -145,9 +146,12 @@ def aplicar_questionario(request, pk):
 @login_required
 def submeter_questionario(request, pk):
     questionario = Questionario.objects.get(pk = pk)
+    
     if datetime.now() > questionario.hora_fim:
         return HttpResponseRedirect('/questionario/detail/'+pk)
+    
     SubmissaoFormSet = formset_factory(SubmissaoForm, formset=BaseFormSet)
+    
     if request.method == 'POST':
         request.POST['form-TOTAL_FORMS'] = u'%s'%len(questionario.get_questoes())
         request.POST['form-INITIAL_FORMS']= u'0'

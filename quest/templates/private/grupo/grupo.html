@@ -1,5 +1,8 @@
 {% extends "private/cadastros.html" %} 
 
+{% block header-button %}  {% endblock %} 
+{% block header-data %} {% endblock %} 
+
 {% block hidden %}
 
 <!-- Modal -->
@@ -52,8 +55,7 @@
 						</thead>
 						<tbody>
 							{% for questionario in grupo.questionario_set.all %}
-							<tr
-								onclick="document.location = '/questionario/detail/{{ questionario.id }}';">
+							<tr class="linked" onclick="linkTo('/questionario/detail/{{ questionario.id }}')">
 								<td>{{ questionario }}</td>
 								<td>{{ questionario.hora_inicio }}</td>
 								<td>{{ questionario.hora_fim}}</td>
@@ -111,7 +113,7 @@
 						<div class="user-pic">
 							<!-- User pic -->
 							<a href="#"><img
-								src="{{STATIC_URL}}macadmin/img/user-big.jpg" alt="{{ aluno }}" /></a>
+								src="{{STATIC_URL}}macadmin/img/Icon-user.png" alt="{{ aluno }}" /></a>
 						</div>
 
 						<div class="user-details">

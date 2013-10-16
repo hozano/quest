@@ -1,5 +1,11 @@
 {% extends "private/base.html" %}
 
+ {% block navigator %} {% endblock %}
+ 
+ {% block header-button %} {% endblock %} 
+ 
+ {% block header-data %} {% endblock %}
+
 {% block hidden %}
 
 <!-- Modal -->
@@ -81,7 +87,7 @@
 						</thead>
 						<tbody>
 						{% for questionario in questionarios %}
-						<tr onclick="document.location = '/questionario/detail/{{ questionario.id }}';">
+						<tr class ="linked" onclick="linkTo('/questionario/detail/{{ questionario.id }}')">
                           <td>{{ questionario }}</td>
                           <td>{{ questionario.hora_inicio }}</td>
                           <td>{{ questionario.hora_fim}}</td>
@@ -108,56 +114,11 @@
 				</div>
 			<div class="widget-foot">
 			{% if perms.core.professor %}
-				<a href="#cadastro" data-toggle="modal" class="btn"> <i class="icon-plus-sign"></i> Criar Questionário </a>
+				<a href="/questionario/create" class="btn"> <i class="icon-plus-sign"></i> Criar Questionário </a>
 			{% endif %}
 			</div>
 		</div>
 	</div>
-
 </div>
-
-{% endblock %}
-
-
-
-{% block content-questionario %}
-
-<h2>Questionários</h2>
-{% if perms.core.professor %}
-	<h4>Aqui você pode criar, atualizar e visualizar os questionários já cadastrados.</h4>
-{% endif %} 
-<br/>
-
-<table cellpadding="0" cellspacing="0" border="0" class="display" id="example" width="100%">
-	<thead>
-		<tr>
-			<th>Nome</th>
-			<th>Criador</th>
-			<th>Tags</th>
-		</tr>
-	</thead>
-{% for questionario in questionarios %}
-	<tbody>
-	<tr>
-		<td><a href="/questionario/detail/{{questionario.id}}">{{questionario.nome}}</a></td>
-		<td>{{questionario.get_criador}}</td>
-		<td>{{questionario.get_tags_as_string|default:"Nenhuma tag associada"}}</td>
-	</tr>
-	</tbody>
-{% endfor %}
-</table>
-
-{% endblock %}
-
-
-{% block extra-js %}
-
-
-<script type="text/javascript">
-	$(function() {
-		$input = $("input[id^='id_hora']");
-		//$input.datetimepicker({format: 'dd/MM/yyyy hh:mm' });
-	});
-</script>
 
 {% endblock %}

@@ -33,7 +33,7 @@ class Questionario(models.Model):
     
     def get_tags_as_string(self):
         string_tags = [tag.name for tag in self.get_tags()]
-        return ", ".join(string_tags)
+        tags =  ", ".join(string_tags)
     
     def __unicode__(self):
         return self.nome
@@ -67,7 +67,10 @@ class Questao(models.Model):
     
     def get_tags_as_string(self):
         string_tags = [tag.name for tag in self.get_tags()]
-        return ", ".join(string_tags)
+        tags =  ", ".join(string_tags)
+        if not len(tags):
+            return "sem tag"
+        return tags
     
     def field_list(self):
         return [('Nome', self.nome), ('Tags', self.get_tags_as_string()),]
@@ -90,6 +93,9 @@ class Submissao(models.Model):
     
     def field_list(self):
         return [('Questionário', self.questionario), ('Hora', self.data_hora)]
+    
+    def avaliada(self):
+        return self.nota != None
     
     def get_respostas(self):
         items = []

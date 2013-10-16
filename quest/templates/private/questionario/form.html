@@ -1,34 +1,64 @@
-{% extends "private/questionario/base_questionario.html" %}
+{% extends "private/questionarios.html" %}
 
-{% block extrahead %}
-	<link href="{{STATIC_URL}}css/datetimepicker/jquery.ui.datetimepicker.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.ui.datetimepicker.min.js"></script>
-	<script type="text/javascript">
-		$(function() {
-			 $("input[id^='id_hora']").datetimepicker({ dateFormat: 'yyyy-mm-dd HH:MM', showAnim:'' });
-		 });
-	</script>
+{% block main-content %}
+<div class="row-fluid">
+
+<div class="span12">
+	<div class="widget">
+		<div class="widget-head">
+			<div class="pull-left"> Questionários </div>
+			<div class="widget-icons pull-right">
+				<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+			</div>
+			<div class="clearfix"></div>
+			</div>
+			<div class="widget-content">
+				<div class="padd">
+					<form name='generic_form' action="" enctype="multipart/form-data" method="post"> {% csrf_token %}
+					{% for hidden in form.hidden_fields %} 	{{ hidden }} {% endfor %}
+					
+					{% for field in form.visible_fields %}
+						    {{ field.label_tag }}{% if field.is_required %}*{% endif %}
+							{{ field }}
+							{% if field.errors %}{{ field.errors }}{% endif %}
+							{{ field.help_text }}
+				    {% endfor %}
+				    
+				    
+				    <p>
+				        {{ formset.management_form }}
+				        {{formset.non_form_errors}}
+				        <input type="submit" value="Salvar" />
+				    </p>
+				</form>
+					
+				</div>
+				<div class="clearfix"></div>
+				<hr />
+				</div>
+			<div class="widget-foot">
+			</div>
+		</div>
+	</div>
+</div>
+
 {% endblock %}
 
-{% block content-questionario %}
-<h2>Criar Questionário</h2>
+{% block extra-js %}
 
-<form name='generic_form' action="" enctype="multipart/form-data" method="post"> {% csrf_token %}
-	{% for hidden in form.hidden_fields %} 	{{ hidden }} {% endfor %}
-
-	{% for field in form.visible_fields %}
-		    {{ field.label_tag }}{% if field.is_required %}*{% endif %} <br/>
-			{{ field }}<br/>
-			{% if field.errors %}{{ field.errors }}{% endif %}
-			{{ field.help_text }}<br/>
-    {% endfor %}
-    
-    <p>
-        {{ formset.management_form }}
-        {{formset.non_form_errors}}
-        <input type="submit" value="Salvar" />
-    </p>
-</form>
-
+<script type="text/javascript">
+	
+	$(function() {
+		$input = $("input[id^='id_hora']");
+		$div = $("<div class='input-append'>");
+		$input.wrap($div);
+		$div = $(".input-append");
+		$div.append('<span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>');
+		$div.datetimepicker({ 
+	    	language: 'pt-BR',
+	        format: 'dd/MM/yyyy hh:mm:ss'
+	    });
+	});
+	
+</script>
 {% endblock %}
-

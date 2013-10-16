@@ -19,11 +19,14 @@ class Professor(models.Model):
             items += list(eval('self.user.%s.all()' % cl))
         return items
     
+    def get_questionarios_criados(self):
+        return self.user.questionario_set.all()
+    
     def get_grupos(self):
         return Grupo.objects.filter(professor = self)
     
     def email(self):
-        return self.user.email
+        return self.user.email        
     
     class Meta:
         permissions = (("professor", "permissao de professor"),)
@@ -38,6 +41,12 @@ class Aluno(models.Model):
     
     def get_grupos(self):
         return Grupo.objects.filter(alunos = self)
+    
+    def get_questionarios_abertos(self):
+        questionarios = []
+        for grupo in self.get_grupos():
+            questionarios.extend(grupo.questionario_set.all())
+        return questionarios
     
     def __unicode__(self):
         return self.user.get_full_name()  

@@ -6,6 +6,7 @@
 <li><a href="/"><i class="icon-home"></i>Home</a>
 <li><a href="/questionarios"><i class="icon-list-alt"></i>Questionarios 
 <li><a href="/submissoes"><i class="icon-reply"></i>Submissões</a>
+{% if perms.core.professor %}
 <li><a href="/questoes"><i class="icon-question-sign"></i>Questões</a>
 <li><a class="has_sub open"><i class=icon-group></i>Cadastros
 <span class="pull-right"> <i class="icon-chevron-right"></i></span></a>
@@ -14,5 +15,5 @@
 		<li><a href="/professor">Professores</a></li>
 		<li><a href="/grupo">Grupos</a></li>
 	</ul></li>
-
+{% endif %}
 {% endblock %} 

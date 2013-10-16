@@ -17,10 +17,8 @@ def criar_questao(request):
                 questao.save()
                 questao.tags = form.cleaned_data['tags']
                 return HttpResponseRedirect('/questoes')
-            return HttpResponse('Deu Erro.')
     else:
         form = QuestaoSubjetivaForm()
-        
     return render_to_response('private/questao/subjetiva/form.html', {'form':form}, 
                                       context_instance=RequestContext(request))
 @login_required

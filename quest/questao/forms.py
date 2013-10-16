@@ -6,12 +6,16 @@ import random
 
 
 class QuestaoForm(forms.ModelForm):
-    enunciado = tinymce_models.HTMLField()
     nivel_estatico = forms.ChoiceField(choices=[(i,i) for i in range(1,11)])
     tags = forms.CharField()
     class Meta:
         model = Questao
         exclude = ['questionarios', 'criador', 'nivel_dinamico']
+    def __init__(self, *args, **kwargs):
+        super(QuestaoForm, self).__init__(*args, **kwargs)
+        self.fields['enunciado'] = forms.CharField(widget=forms.Textarea(attrs={'class':"cleditor", 'rows':7, 'cols':60}))
+        
+        
 
 class QuestionarioForm(forms.ModelForm):
     class Meta:
@@ -30,7 +34,7 @@ class QuestionarioForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         from quest.questao.models import get_questoes
         super(QuestionarioForm,self).__init__(*args,**kwargs)
-        self.fields['questoes'] = forms.MultipleChoiceField(choices=[('%s#%d' % (i.uid(), i.id), i.nome) for i in get_questoes()],widget=forms.CheckboxSelectMultiple)    
+        self.fields['questoes'] = forms.MultipleChoiceField(choices=[('%s#%d' % (i.uid(), i.id), '%s (%s)' % (i.nome, i.get_tags_as_string()) ) for i in get_questoes()],widget=forms.CheckboxSelectMultiple)    
         
 class AplicarQuestionarioForm(forms.Form):
     def __init__(self, grupos, *args, **kwargs):
@@ -46,7 +50,7 @@ class RespostaForm(forms.Form):
     def __init__(self, questao, *args, **kwargs):
         super(RespostaForm, self).__init__(*args, **kwargs)
         self.questao = questao
-        self.fields['resposta'] = forms.CharField(widget=forms.Textarea(attrs={'rows':7, 'cols':60}))
+        self.fields['resposta'] = forms.CharField(widget=forms.Textarea(attrs={'class':"cleditor", 'rows':7, 'cols':60}))
         
 Questao.RespostaForm = RespostaForm
 

@@ -1,5 +1,11 @@
 {% extends "private/base.html" %}
 
+ {% block navigator %} {% endblock %}
+ 
+ {% block header-button %} {% endblock %} 
+ 
+ {% block header-data %} {% endblock %}
+ 
 {% block sidebar %}
 
 <li><a href="/"><i class="icon-home"></i>Home</a>
@@ -60,7 +66,7 @@
 						</thead>
 						<tbody>
 						{% for submissao in submissoes %}
-						<tr onclick="document.location = '/submissao/detail/{{ submissao.id }}';">
+						<tr class="linked" onclick="linkTo('/submissao/detail/{{ submissao.id }}')">
                           <td>{{ submissao.questionario }}</td>
                           <td>{{ submissao.data_hora }}</td>
                           <td>{{ submissao.aluno }}</td>

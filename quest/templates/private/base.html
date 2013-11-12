@@ -25,20 +25,17 @@
 <link rel="stylesheet" href="{{STATIC_URL}}macadmin/style/bootstrap-datetimepicker.min.css">
 <!-- CLEditor -->
 <link rel="stylesheet" href="{{STATIC_URL}}macadmin/style/jquery.cleditor.css">
-<!-- Uniform -->
-<link rel="stylesheet" href="{{STATIC_URL}}macadmin/style/uniform.default.css">
 <!-- Bootstrap toggle -->
-<link rel="stylesheet" href="{{STATIC_URL}}macadmin/style/bootstrap-toggle-buttons.css">
+<link rel="stylesheet" href="{{STATIC_URL}}macadmin/style/bootstrap-switch.css">
 <!-- Main stylesheet -->
 <link href="{{STATIC_URL}}macadmin/style/style.css" rel="stylesheet">
 <!-- Widgets stylesheet -->
 <link href="{{STATIC_URL}}macadmin/style/widgets.css" rel="stylesheet">
-<!-- Responsive style (from Bootstrap) -->
-<link href="{{STATIC_URL}}macadmin/style/bootstrap-responsive.css" rel="stylesheet">
+
 
 <!-- HTML5 Support for IE -->
 <!--[if lt IE 9]>
-  <script src="js/html5shim.js"></script>
+  <script src=""{{STATIC_URL}}macadmin/js/html5shim.js"></script>
   <![endif]-->
 
 <!-- Favicon -->
@@ -48,47 +45,53 @@
 .linked {
     color:#026b9c;
   }
-  .linked:hover {
+.linked:hover {
     color: #003f5c;
 	text-decoration: none;
 	cursor: pointer;
   }
+  
 </style>
 {% block extra-head %} {% endblock %}
 </head>
 
 <body>
 	{% block hidden %} {% endblock %}
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
+	<div class="navbar navbar-fixed-top bs-docs-nav" role="banner">
+		<div class="container">
+			<div class="navbar-header">
 				<!-- Menu button for smallar screens -->
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span>Menu</span> </a>
+				<button class="navbar-toggle btn-navbar" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse"> <span>Menu</span> </button>
 				<!-- Site name for smallar screens -->
-				<a href="/" class="brand hidden-desktop">Quest?</a>
+				<a href="/" class="navbar-brand hidden-lg">Quest?</a>
+			</div>
 
-				<!-- Navigation starts -->
-				<div class="nav-collapse collapse">
+			<!-- Navigation starts -->
+			<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
 
-					<ul class="nav">
+				<ul class="nav navbar-nav">
 						{% block navigator %}
 						<!-- Upload to server link. Class "dropdown-big" creates big dropdown -->
-						<li class="dropdown dropdown-big"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-								class="badge badge-important"><i
-									class="icon-cloud-upload"></i></span> Upload to Cloud</a> <!-- Dropdown -->
+						<li class="dropdown dropdown-big">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="label label-success">
+						<i class="icon-cloud-upload"></i></span> Upload to Cloud</a> <!-- Dropdown -->
 							<ul class="dropdown-menu">
 								<li>
 									<!-- Progress bar -->
 									<p>Photo Upload in Progress</p> <!-- Bootstrap progress bar -->
-									<div class="progress">
-										<div class="bar bar-success" style="width: 40%;"></div>
+									<div class="progress progress-striped active">
+										<div class="progress-bar progress-bar-info"  role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+										<span class="sr-only">40% Complete</span>
+										</div>
 									</div>
 
 									<hr /> <!-- Progress bar -->
 									<p>Video Upload in Progress</p> <!-- Bootstrap progress bar -->
-									<div class="progress">
-										<div class="bar bar-important" style="width: 80%;"></div>
-									</div>
+									<div class="progress progress-striped active">
+										<div class="progress-bar progress-bar-success"  role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+											<span class="sr-only">80% Complete</span>
+										</div>
+			   						</div> 
 
 									<hr /> <!-- Dropdown menu footer -->
 									<div class="drop-foot">
@@ -96,27 +99,21 @@
 									</div>
 
 								</li>
-							</ul></li>
+							</ul>
+						</li>
 
 						<!-- Sync to server link -->
-						<li class="dropdown dropdown-big"><a href="#"
-							class="dropdown-toggle" data-toggle="dropdown"><span
-								class="badge badge-success"><i class="icon-refresh"></i></span>
+						<li class="dropdown dropdown-big">
+						  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+								class="label label-danger"><i class="icon-refresh"></i></span>
 								Sync with Server</a> <!-- Dropdown -->
 							<ul class="dropdown-menu">
 								<li>
 									<!-- Using "icon-spin" class to rotate icon. -->
-									<p>
-										<span class="badge badge-success"><i
-											class="icon-refresh icon-spin"></i></span> Syncing Members Lists to
-										Server
-									</p>
+									<p><span class="label label-info"><i class="icon-cloud"></i></span> Syncing Members Lists to Server</p>
+									
 									<hr />
-									<p>
-										<span class="badge badge-warning"><i
-											class="icon-refresh icon-spin"></i></span> Syncing Bookmarks Lists
-										to Cloud
-									</p>
+									<p><span class="label label-warning"><i class="icon-cloud"></i></span> Syncing Bookmarks Lists to Cloud</p>
 
 									<hr /> <!-- Dropdown menu footer -->
 									<div class="drop-foot">
@@ -131,15 +128,18 @@
 					</ul>
 
 					<!-- Search form -->
-					<form class="navbar-search pull-left">
-						<input type="text" class="search-query" placeholder="Search">
+					<form class="navbar-form navbar-left" role="search">
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Search">
+						</div>
 					</form>
 
 					<!-- Links -->
-					<ul class="nav pull-right">
-						<li class="dropdown pull-right"><a data-toggle="dropdown"
-							class="dropdown-toggle" href="#"> <i class="icon-user"></i>
-								{{user.get_full_name}} <b class="caret"></b> </a> 
+					<ul class="nav navbar-nav pull-right">
+					  <li class="dropdown pull-right">
+						<a data-toggle="dropdown" class="dropdown-toggle" href="#"> 
+						   <i class="icon-user"></i> {{user.get_full_name}} <b class="caret"></b> 
+						</a> 
 							<!-- Dropdown menu -->
 							<ul class="dropdown-menu">
 								<li>
@@ -152,21 +152,20 @@
 								<!--  <li><a href="#"><i class="icon-cogs"></i> Configurações</a></li> -->
 								<li><a href="/logout"><i class="icon-off"></i> Sair</a></li> 
 								{% block extra-useropt %} {% endblock %}
-							</ul></li>
+							</ul>
+						</li>
 					</ul>
-				</div>
-
-			</div>
+			</nav>
 		</div>
 	</div>
 
 	<!-- Header starts -->
 	<header>
-		<div class="container-fluid">
-			<div class="row-fluid">
+		<div class="container">
+			<div class="row">
 
 				<!-- Logo section -->
-				<div class="span4">
+				<div class="col-md-4">
 					<!-- Logo. -->
 					<div class="logo">
 						<h1>
@@ -178,7 +177,7 @@
 				</div>
 
 				<!-- Button section -->
-				<div class="span4">
+				<div class="col-md-4">
 
 					<!-- Buttons -->
 					<ul class="nav nav-pills">
@@ -186,7 +185,7 @@
 						<!-- Comment button with number of latest comments count -->
 						<li class="dropdown dropdown-big">
 							<a class="dropdown-toggle" href="#" data-toggle="dropdown"> 
-							<i class="icon-comments"></i> Chats <span class="badge badge-info">6</span>
+							<i class="icon-comments"></i> Chats <span class="label label-info">6</span>
 						</a>
 
 							<ul class="dropdown-menu">
@@ -268,7 +267,7 @@
 						<!-- Members button with number of latest members count -->
 						<li class="dropdown dropdown-big"><a class="dropdown-toggle"
 							href="#" data-toggle="dropdown"> <i class="icon-user"></i>
-								Users <span class="badge badge-success">6</span>
+								Users <span class="label label-success">6</span>
 						</a>
 
 							<ul class="dropdown-menu">
@@ -318,7 +317,7 @@
 
 				<!-- Data section -->
 
-				<div class="span4">
+				<div class="col-md-4">
 					<div class="header-data">
 						{% block header-data %}
 						<!-- Traffic data -->
@@ -468,13 +467,12 @@
 			<!-- Matter -->
 
 			<div class="matter">
-				<div class="container-fluid">
-				
+				<div class="container">
 					{% block main-content %}
 					<!-- Today status. jQuery Sparkline plugin used. -->
 
-					<div class="row-fluid">
-						<div class="span12">
+					<div class="row">
+						<div class="col-md-12">
 							<!-- List starts -->
 							<ul class="today-datas">
 								<!-- List #1 -->
@@ -517,11 +515,11 @@
 
 					<!-- Dashboard Graph starts -->
 
-					<div class="row-fluid">
-						<div class="span8">
+					<div class="row">
+						<div class="col-md-8">
 
 							<!-- Widget -->
-							<div class="widget">
+							<div class="widget wred">
 								<!-- Widget head -->
 								<div class="widget-head">
 									<div class="pull-left">Dashboard</div>
@@ -555,9 +553,9 @@
 							</div>
 						</div>
 
-						<div class="span4">
+						<div class="col-md-4">
 
-							<div class="widget">
+							<div class="widget wviolet">
 
 								<div class="widget-head">
 									<div class="pull-left">Today Status</div>
@@ -599,11 +597,11 @@
 					<!-- Dashboard graph ends -->
 
 					<!-- Chats, File upload and Recent Comments -->
-					<div class="row-fluid">
+					<div class="row">
 
-						<div class="span4">
+						<div class="col-md-4">
 							<!-- Widget -->
-							<div class="widget">
+							<div class="widget wblue">
 								<!-- Widget title -->
 								<div class="widget-head">
 									<div class="pull-left">Chats</div>
@@ -710,8 +708,8 @@
 
 
 						<!-- File Upload widget -->
-						<div class="span4">
-							<div class="widget">
+						<div class="col-md-4">
+							<div class="widget wyellow">
 								<!-- Widget title -->
 								<div class="widget-head">
 									<div class="pull-left">File Upload</div>
@@ -748,7 +746,7 @@
 								</div>
 							</div>
 
-							<div class="widget">
+							<div class="widget wred">
 								<!-- Widget title -->
 								<div class="widget-head">
 									<div class="pull-left">Browsers</div>
@@ -801,9 +799,9 @@
 						</div>
 
 
-						<div class="span4">
+						<div class="col-md-4">
 							<!-- Widget -->
-							<div class="widget">
+							<div class="widget wviolet">
 								<!-- Widget title -->
 								<div class="widget-head">
 									<div class="pull-left">Recent Comments</div>
@@ -930,8 +928,8 @@
 					</div>
 
 
-					<div class="row-fluid">
-						<div class="span6">
+					<div class="row">
+						<div class="col-md-6">
 							<div class="widget wblack">
 								<div class="widget-head">
 									<div class="pull-left">Black Chart</div>
@@ -953,8 +951,8 @@
 								</div>
 							</div>
 						</div>
-						<div class="span6">
-							<div class="widget">
+						<div class="col-md-6">
+							<div class="widget wgreen">
 								<div class="widget-head">
 									<div class="pull-left">Quick Post</div>
 									<div class="widget-icons pull-right">
@@ -1080,8 +1078,8 @@
 	<script src="{{STATIC_URL}}macadmin/js/jquery.flot.pie.js"></script>
 	<script src="{{STATIC_URL}}macadmin/js/jquery.flot.stack.js"></script>
 
-	<!-- jQuery Notification - Noty 
-	<script src="{{STATIC_URL}}macadmin/js/jquery.noty.js"></script>-->
+	<!-- jQuery Notification - Noty -->
+	<script src="{{STATIC_URL}}macadmin/js/jquery.noty.js"></script>
 	<!-- jQuery Notify -->
 	<script src="{{STATIC_URL}}macadmin/js/themes/default.js"></script>
 	<!-- jQuery Notify -->
@@ -1099,10 +1097,6 @@
 	<!-- CLEditor -->
 	<script src="{{STATIC_URL}}macadmin/js/bootstrap-datetimepicker.min.js"></script>
 	<!-- Date picker -->
-	<script src="{{STATIC_URL}}macadmin/js/jquery.uniform.min.js"></script>
-	<!-- jQuery Uniform -->
-	<script src="{{STATIC_URL}}macadmin/js/jquery.toggle.buttons.js"></script>
-	<!-- Bootstrap Toggle -->
 	<script src="{{STATIC_URL}}macadmin/js/filter.js"></script>
 	<!-- Filter for support page -->
 	<script src="{{STATIC_URL}}macadmin/js/custom.js"></script>
@@ -1114,6 +1108,13 @@
 		function linkTo(url) {
 			document.location.href = url;			
 		}
+		$("input[type='text']").addClass("form-control");
+		$("textarea").addClass("cleditor form-control");
+		$pass = $("input[type='password']");
+		$pass.addClass("form-control");
+		$pass.wrap("<div class='col-lg-8'/>");
+		$select = $("select");
+		$select.addClass("form-control");
 	</script>
 
 	
@@ -1121,9 +1122,10 @@
 
 	<!-- Script for this page -->
 	<script type="text/javascript">
+		/*
 		$(function() {
 
-			/* Bar Chart starts */
+			/* Bar Chart starts 
 
 			var d1 = [];
 			for ( var i = 0; i <= 20; i += 1)
@@ -1185,11 +1187,11 @@
 				plotWithOptions();
 			});
 
-			/* Bar chart ends */
+			/* Bar chart ends 
 
 		});
 
-		/* Curve chart starts */
+		/* Curve chart starts 
 
 		$(function() {
 			var sin = [], cos = [];
@@ -1284,7 +1286,7 @@
 
 		});
 
-		/* Curve chart ends */
+		 Curve chart ends */
 	</script>
 
 </body>

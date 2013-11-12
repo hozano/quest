@@ -186,10 +186,8 @@ def criar_alunos(request):
             result = handle_criar_alunos_file(alunos,grupos)
             return render_to_response('private/aluno/resultado.html', {'cadastrados' : result['cadastrados'], 'erro':result['erro']},
                               context_instance=RequestContext(request))
-    else:
-        form = AlunosForm()
-    return render_to_response('private/aluno/alunos_form.html', {'form': form, 'professor':request.user.professor},
-                              context_instance=RequestContext(request))
+    return HttpResponseRedirect("/aluno")
+
 
 @permission_required("core.professor", login_url="/home")
 def aluno(request):
@@ -205,10 +203,12 @@ def criar_grupo(request):
         if form.is_valid():
             with transaction.commit_on_success():
                 grupo = Grupo(codigo = form.cleaned_data["codigo"], nome = form.cleaned_data["nome"], professor = request.user.professor,
-                              about = form.cleaned_data["about"])
+                              sobre = form.cleaned_data["sobre"])
                 grupo.save()
                 return HttpResponseRedirect('/grupo')
-    return HttpResponseRedirect('/grupo')
+    else:
+        form = GrupoForm()
+    return render_to_response("private/grupo/grupo_form.html", {'form': form}, context_instance=RequestContext(request));
 
 @permission_required("core.professor", login_url="/home")
 def grupo(request):

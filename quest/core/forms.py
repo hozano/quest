@@ -39,6 +39,9 @@ class GrupoForm(forms.ModelForm):
     class Meta:
         model = Grupo
         exclude = ["alunos", "professor", "questionarios"]
+    def __init__(self, *args, **kwargs):
+        super(GrupoForm, self).__init__(*args, **kwargs)
+        self.fields['sobre'] = forms.CharField(widget=forms.Textarea(attrs={'class':"cleditor", 'rows':7, 'cols':60}))
         
 class GrupoAddAlunosForm(forms.Form):
         

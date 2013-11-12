@@ -27,7 +27,12 @@
 						{% for form in forms %}
 							<h2>Questão {{forloop.counter}}</h2>
 							<h5>{{form.questao.enunciado|safe}}</h5>
-								{{ form }}
+								{% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
+
+						{% for field in form.visible_fields %} {{ field.label_tag }}
+						{% if field.is_required %}*{% endif %} {{ field }} <br/> 
+						{% if field.errors %}{{ field.errors }}{% endif %} {{ field.help_text }}<br/>
+						{% endfor %}
 							<br>
 						{% endfor %}
                         					

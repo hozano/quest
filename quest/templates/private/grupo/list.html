@@ -4,26 +4,37 @@
 {% block navigator %} {% endblock %}
 {% block header-button %}
 
-<li class="dropdown dropdown-big"><a href="#cad_prof" data-toggle="modal"> 
+<li class="dropdown dropdown-big"><a href="/grupo/create"> 
 <i class="icon-plus-sign"></i> Cadastrar</a> 
 
 <!-- Modal -->
-	<div id="cad_prof" class="modal hide fade" tabindex="-1" role="dialog"
+	<div id="cad_prof" class="modal fade" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
-		
+		<div class="modal-dialog">
+		<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<h3 id="myModalLabel">Cadastrar Grupo</h3>
 		</div>
 		<form name='generic_form' action="/grupo/create" enctype="multipart/form-data" method="post"> {% csrf_token %}
 			<div class="modal-body">
-				{{ form }}
+				{% for hidden in form.hidden_fields %} 	{{ hidden }} {% endfor %}
+					
+					{% for field in form.visible_fields %}
+						    {{ field.label_tag }}<br>
+						    {% if field.is_required %}*{% endif %}
+							{{ field }}<br/>
+							{{ field.help_text }}<br/>
+							{% if field.errors %}{{ field.errors }}{% endif %}
+				    {% endfor %}
 			</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
 			<button type="submit" class="btn btn-primary">Cadastrar</button>
 		</div>
 		</form>
+		</div>
+		</div>
 	</div> 
 	
 {% endblock %} 

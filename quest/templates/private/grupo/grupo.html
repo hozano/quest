@@ -6,20 +6,33 @@
 {% block hidden %}
 
 <!-- Modal -->
-<div id="cadastro" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
+<div id="cadastro" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	<div class="modal-content">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		<h3 id="myModalLabel">Adicionar Alunos</h3>
 	</div>
 	<form name='generic_form' action='/grupo/add/{{ grupo.id }}' enctype="multipart/form-data" method="post">
 		{% csrf_token %}
-		<div class="modal-body">{{ form }}</div>
+		<div class="modal-body">
+		{% for hidden in form.hidden_fields %} 	{{ hidden }} {% endfor %}
+					
+					{% for field in form.visible_fields %}
+						    {{ field.label_tag }}<br>
+						    {% if field.is_required %}*{% endif %}
+							{{ field }}<br/>
+							{{ field.help_text }}<br/>
+							{% if field.errors %}{{ field.errors }}{% endif %}
+				    {% endfor %}
+		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
 			<button type="submit" class="btn btn-primary">Cadastrar</button>
 		</div>
 	</form>
+	</div>
+	</div>
 </div> 
 	
 {% endblock %} 
@@ -137,7 +150,7 @@
 
 				</div>
 				<div class="widget-foot">
-					<a href="#cadastro" data-toggle="modal" class="btn"> <i class="icon-plus-sign"></i> Adiconar Alunos </a>
+					<a href="#cadastro" data-toggle="modal" class="btn btn-primary"> <i class="icon-plus-sign"></i> Adiconar Alunos </a>
 				</div>
 			</div>
 		</div>

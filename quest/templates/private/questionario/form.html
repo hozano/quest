@@ -18,10 +18,11 @@
 					{% for hidden in form.hidden_fields %} 	{{ hidden }} {% endfor %}
 					
 					{% for field in form.visible_fields %}
-						    {{ field.label_tag }}{% if field.is_required %}*{% endif %}
+						    {{ field.label_tag }}<br>
+						    {% if field.is_required %}*{% endif %}
 							{{ field }}
+							{{ field.help_text }}<br/>
 							{% if field.errors %}{{ field.errors }}{% endif %}
-							{{ field.help_text }}
 				    {% endfor %}
 				    
 				    
@@ -49,11 +50,13 @@
 <script type="text/javascript">
 	
 	$(function() {
+		$("#id_nome").addClass("form-control")
 		$input = $("input[id^='id_hora']");
+		$input.addClass("form-control dtpicker");
 		$div = $("<div class='input-append'>");
 		$input.wrap($div);
 		$div = $(".input-append");
-		$div.append('<span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>');
+		$div.append('<span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar" class="btn btn-info btn-lg icon-calendar"> </i></span>');
 		$div.datetimepicker({ 
 	    	language: 'pt-BR',
 	        format: 'dd/MM/yyyy hh:mm:ss'

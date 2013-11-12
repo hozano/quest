@@ -62,9 +62,9 @@
 
 {% block main-content %}
 
-<div class="row-fluid">
+<div class="row">
 
-<div class="span12">
+<div class="col-md-12">
 		<div class="widget">
 			<div class="widget-head">
 				<div class="pull-left"> Questionários </div>
@@ -114,7 +114,7 @@
 				</div>
 			<div class="widget-foot">
 			{% if perms.core.professor %}
-				<a href="/questionario/create" class="btn"> <i class="icon-plus-sign"></i> Criar Questionário </a>
+				<a href="/questionario/create" class="btn btn-primary"> <i class="icon-plus-sign"></i> Criar Questionário </a>
 			{% endif %}
 			</div>
 		</div>

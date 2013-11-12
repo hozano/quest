@@ -4,26 +4,80 @@
 {% block header-button %}
 
 <li class="dropdown dropdown-big"><a href="#cad_aluno" data-toggle="modal"> 
-<i class="icon-plus-sign"></i> Cadastrar</a> 
+<i class="icon-plus-sign"></i> Cadastrar</a> </li>
+<li class="dropdown dropdown-big"><a href="#cad_alunos" data-toggle="modal"> 
+<i class="icon-plus-sign"></i> Cadastrar Alunos</a> </li>
 
 <!-- Modal -->
-	<div id="cad_aluno" class="modal hide fade" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3 id="myModalLabel">Cadastrar Aluno</h3>
-		</div>
-		<form name='generic_form' action="/aluno/create" enctype="multipart/form-data" method="post"> {% csrf_token %}
-			<div class="modal-body">
-				{{ form }}
+	<div id="cad_aluno" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h3 id="myModalLabel">Cadastrar Aluno</h3>
+				</div>
+				<form name='generic_form' action="/aluno/create" enctype="multipart/form-data" method="post"> {% csrf_token %}
+				<div class="modal-body">
+					{% for hidden in form.hidden_fields %} 	{{ hidden }} {% endfor %}
+					
+					{% for field in form.visible_fields %}
+						    {{ field.label_tag }}<br>
+						    {% if field.is_required %}*{% endif %}
+							{{ field }}<br/>
+							{{ field.help_text }}<br/>
+							{% if field.errors %}{{ field.errors }}{% endif %}
+				    {% endfor %}
+				    
+				</div>
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
+					<button type="submit" class="btn btn-primary">Cadastrar</button>
+				</div>
+				</form>
 			</div>
-		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
-			<button type="submit" class="btn btn-primary">Cadastrar</button>
-		</div>
-		</form>
-	</div> 
+		</div> 
+	</div>
+	
+	<div id="cad_alunos" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form name='generic_form' action="aluno/create_m" enctype="multipart/form-data" method="post"> {% csrf_token %}
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h3 id="myModalLabel">Cadastrar Alunos</h3>
+				</div>
+				
+				<div class="modal-body">
+
+						<p>Escolha a disciplina ao qual desejas vincular os alunos</p>
+						{% for disciplina in professor.get_disciplinas%}
+						<p>
+							<input type="checkbox" name="disciplinas" value={{disciplina.id}}>{{disciplina.nome}}
+						</p>
+						{% endfor %} </br>
+						<p>
+							Em cada linha do arquivo deve conter as seguintes informações dos
+							alunos separadas por espaço em branco:</br> númeração, nome completo,
+							matricula. </br>
+							</br>
+						</p>
+
+						{% for hidden in multiform.hidden_fields %} {{ hidden }} {% endfor %}
+
+						{% for field in multiform.visible_fields %} {{ field.label_tag }}
+						{% if field.is_required %}*{% endif %}
+						<br /> {{ field|safe }} <br /> {% if field.errors %}{{ field.errors }}{% endif %} 
+						{{ field.help_text }}<br /> {% endfor %}
+	
+				</div>
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
+					<button type="submit" class="btn btn-primary">Cadastrar</button>
+				</div>
+				</form>
+			</div>
+		</div> 
+	</div>
 	
 {% endblock %} 
 

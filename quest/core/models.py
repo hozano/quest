@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class Professor(models.Model):
     user = models.OneToOneField(User)
-    about = models.TextField()
+    sobre = models.TextField()
         
     def __unicode__(self):
         return self.user.get_full_name()  
@@ -34,7 +34,7 @@ class Professor(models.Model):
 class Aluno(models.Model):
     matricula = models.CharField(max_length= 15)
     user = models.OneToOneField(User)
-    about = models.TextField()
+    sobre = models.TextField()
     
     def nome(self):
         return self.user.get_full_name()
@@ -60,7 +60,7 @@ class Grupo(models.Model):
     codigo = models.CharField(max_length = 10)
     nome = models.CharField(max_length = 30)
     professor = models.ForeignKey(Professor)
-    about = models.TextField()
+    sobre = models.TextField()
     
     def __unicode__(self):
         return self.codigo

@@ -157,7 +157,7 @@ $('.wclose').click(function(e){
 
     setTimeout(function(){
 
-        $('.progress-animated .bar').each(function() {
+        $('.progress-animated .progress-bar').each(function() {
             var me = $(this);
             var perc = me.attr("data-percentage");
 
@@ -309,53 +309,11 @@ $(document).ready(function() {
 
    $(function() {
     $('#datetimepicker2').datetimepicker({
-      pickDate: false
+      pickDate: true
     });
   });
 
 
-/* Bootstrap toggle */
-
-$('.toggle-button').toggleButtons({
-    style: {
-        // Accepted values ["primary", "danger", "info", "success", "warning"] or nothing
-        enabled: "danger"
-    }
-});
-
-$('.warning-toggle-button').toggleButtons({
-    width:130,
-    style: {
-        // Accepted values ["primary", "danger", "info", "success", "warning"] or nothing
-        enabled: "success",
-        disabled: "danger"
-    },
-    label: {
-        enabled: "Enabled",
-        disabled: "Disabled"
-    }
-});
-
-$('.info-toggle-button').toggleButtons({
-    style: {
-        // Accepted values ["primary", "danger", "info", "success", "warning"] or nothing
-        enabled: "info"
-    }
-});
-
-$('.success-toggle-button').toggleButtons({
-    style: {
-        // Accepted values ["primary", "danger", "info", "success", "warning"] or nothing
-        enabled: "warning"
-    }
-});
-
-
-/* Uniform - Form Styleing */
-
-$(document).ready(function() {
-  $(".uni select, .uni input, .uni textarea").uniform();
-});
 
 
 /* CL Editor */

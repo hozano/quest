@@ -3,26 +3,38 @@
 {% block navigator %} {% endblock %}
 {% block header-button %}
 
-<li class="dropdown dropdown-big"><a href="#cad_prof" data-toggle="modal"> 
+<li class="dropdown dropdown-big">
+<a href="#cad_prof"  class="btn btn-info" data-toggle="modal"> 
 <i class="icon-plus-sign"></i> Cadastrar</a> 
 
 <!-- Modal -->
-	<div id="cad_prof" class="modal hide fade" tabindex="-1" role="dialog"
+	<div id="cad_prof" class="modal fade" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
-		
+		<div class="modal-dialog">
+		<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3 id="myModalLabel">Cadastrar Professor</h3>
+			<h3  class="modal-title">Cadastrar Professor</h3>
 		</div>
 		<form name='generic_form' action="/professor/create" enctype="multipart/form-data" method="post"> {% csrf_token %}
 			<div class="modal-body">
-				{{ form }}
+				{% for hidden in form.hidden_fields %} 	{{ hidden }} {% endfor %}
+					
+					{% for field in form.visible_fields %}
+						    {{ field.label_tag }}<br>
+						    {% if field.is_required %}*{% endif %}
+							{{ field }}<br/>
+							{{ field.help_text }}<br/>
+							{% if field.errors %}{{ field.errors }}{% endif %}
+				    {% endfor %}
 			</div>
 		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
+			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Fechar</button>
 			<button type="submit" class="btn btn-primary">Cadastrar</button>
 		</div>
 		</form>
+		</div>
+		</div>
 	</div> 
 	
 {% endblock %} 
@@ -71,9 +83,9 @@
 								<p>{{ professor.about }}</p>
 
 								<a href="/professor/detail/{{professor.id}}"
-									class="btn btn-info btn-mini"><i class="icon-user"></i> Ver
+									class="btn btn-info btn-sm"><i class="icon-user"></i> Ver
 									Perfil</a> <a href="mailto:{{professor.email}}"
-									class="btn btn-mini"><i class="icon-envelope-alt"></i>
+									class="btn btn-sm btn-default"><i class="icon-envelope-alt"></i>
 									Enviar Mensagem</a>
 
 							</div>

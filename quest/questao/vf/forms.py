@@ -1,6 +1,6 @@
 # coding:utf-8
-from quest.questao.vf.models import QuestaoVF, AlternativaVFQuestao, RespostaVF
-from quest.questao.forms import QuestaoForm
+from models import QuestaoVF, AlternativaVFQuestao, RespostaVF
+from questao.forms import QuestaoForm
 from django.forms.formsets import formset_factory, BaseFormSet
 from django import forms
 import random

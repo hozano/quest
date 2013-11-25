@@ -2,9 +2,9 @@
 from django.shortcuts import render_to_response, RequestContext
 from django.db import transaction
 from django.http import HttpResponseRedirect, HttpResponse
-from quest.questao.subjetiva.forms import QuestaoSubjetivaForm
+from forms import QuestaoSubjetivaForm
 from django.contrib.auth.decorators import login_required, permission_required
-from quest.questao.subjetiva.models import QuestaoSubjetiva
+from models import QuestaoSubjetiva
 
 @permission_required("core.professor", login_url="/home")
 def criar_questao(request):

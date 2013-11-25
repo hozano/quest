@@ -1,6 +1,5 @@
-from quest.questao.subjetiva.models import QuestaoSubjetiva, RespostaSubjetiva
-from quest.questao.forms import QuestaoForm
-from tinymce import models as tinymce_models
+from models import QuestaoSubjetiva, RespostaSubjetiva
+from questao.forms import QuestaoForm
 from django import forms
 
 class QuestaoSubjetivaForm(QuestaoForm):

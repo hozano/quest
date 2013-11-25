@@ -1,6 +1,6 @@
 #coding:utf-8
 from django.db import models
-from quest.questao.models import Questao, Resposta
+from questao.models import Questao, Resposta
 
 class QuestaoVF(Questao):
     class Meta:

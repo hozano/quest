@@ -1,8 +1,8 @@
 # coding:utf-8
 from django.contrib.auth.models import User 
 from django.db import models
-from quest import tagging
-from quest.core.models import Grupo, Aluno
+import tagging
+from core.models import Grupo, Aluno
 
 class Questionario(models.Model):
     nome = models.CharField(max_length=100)

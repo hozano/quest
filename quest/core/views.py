@@ -4,9 +4,8 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db import transaction
 from django.db.models import Q
-from quest.core.models import Professor, Aluno, Grupo
-from quest.core.forms import ProfessorForm, AlunoForm, GrupoForm,\
-    GrupoAddAlunosForm, AlunosForm
+from models import Professor, Aluno, Grupo
+from forms import ProfessorForm, AlunoForm, GrupoForm, GrupoAddAlunosForm, AlunosForm, ChangePasswordForm
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Permission, User
 from django.utils import simplejson
@@ -242,4 +241,18 @@ def adicionar_alunos_grupo(request, pk):
     
     return render_to_response('private/grupo/grupo.html', {'form':form, 'grupo':grupo}, context_instance=RequestContext(request))
 
-    
+@login_required
+def pass_change(request):
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            with transaction.commit_on_success():
+                user = request.user
+                if(user.check_password(form.cleaned_data["antigo"]) and form.cleaned_data["novo"] == form.cleaned_data["rep"]):
+                    user.set_password(form.cleaned_data["novo"])
+                    user.save()
+                    return render_to_response ('private/mensagem_generica.html',{'link':'/home', 'msg':'Senha Alterada com sucesso!'},  context_instance=RequestContext(request))
+    else:
+        form = ChangePasswordForm()
+    return render_to_response("private/change_pwd.html", {'form': form}, context_instance=RequestContext(request))
+

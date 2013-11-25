@@ -258,7 +258,7 @@ $(document).ready(function(){
 
   });
 
-/* jQuery Notification */
+/* jQuery Notification 
 
 $(document).ready(function(){
 
@@ -299,7 +299,7 @@ $(document).ready(function() {
 });
 
 
-/* Date picker */
+/* Date picker 
 
   $(function() {
     $('#datetimepicker1').datetimepicker({
@@ -313,8 +313,7 @@ $(document).ready(function() {
     });
   });
 
-
-
+   */
 
 /* CL Editor */
 

@@ -1,4 +1,4 @@
-from quest.core import models
+import models
 from django.contrib import admin
 
 admin.site.register(models.Professor)

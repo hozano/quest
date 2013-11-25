@@ -2,8 +2,8 @@
 from django.shortcuts import render_to_response, RequestContext
 from django.db import transaction
 from django.http import HttpResponseRedirect, HttpResponse
-from quest.questao.objetiva.forms import QuestaoObjetivaForm, AlternativaObjetivaFormSet
-from quest.questao.objetiva.models import AlternativaQuestao, QuestaoObjetiva
+from forms import QuestaoObjetivaForm, AlternativaObjetivaFormSet
+from models import AlternativaQuestao, QuestaoObjetiva
 from django.contrib.auth.decorators import login_required, permission_required
 
 @permission_required("core.professor", login_url="/home")

@@ -105,7 +105,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'quest.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     PROJECT_ROOT_PATH + '/templates',
@@ -122,9 +122,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'quest.core',
-    'quest.questao',
-    'tinymce',
+    'core',
+    'questao',
+    #'tinymce',
     'tagging',
 
 )
@@ -142,7 +142,7 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
                                 "django.core.context_processors.media",
                                 "django.core.context_processors.static",
                                 "django.contrib.messages.context_processors.messages",
-                                "quest.questao.modulos_processor",
+                                "questao.modulos_processor",
 )
 
 # A sample logging configuration. The only tangible logging

@@ -2,12 +2,11 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required, permission_required
-from quest.questao.models import modulo_map, Questionario, get_questoes,  Submissao
-from quest.questao.forms import QuestionarioForm, AplicarQuestionarioForm,\
-    SubmissaoForm, make_forms_from_questionario
+from models import modulo_map, Questionario, get_questoes,  Submissao
+from forms import QuestionarioForm, AplicarQuestionarioForm, SubmissaoForm, make_forms_from_questionario
 from django.db import transaction
 from django.http import HttpResponseRedirect, HttpResponse
-from quest.core.models import Grupo, Aluno
+from core.models import Grupo, Aluno
 from django.forms.formsets import formset_factory, BaseFormSet
 
 from datetime import datetime

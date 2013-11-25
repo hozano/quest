@@ -1,5 +1,5 @@
 from django import template
-from quest.core.models import Questao, QuestaoObjetiva, QuestaoSubjetiva, QuestaoVF
+from core.models import Questao, QuestaoObjetiva, QuestaoSubjetiva, QuestaoVF
 
 register = template.Library()
 

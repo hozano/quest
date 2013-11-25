@@ -1,4 +1,50 @@
-{% extends "private/home.html" %}
+{% extends "private/index.html" %}
+
+{% block main-content %}
+
+<div class="row-fluid">
+	
+	<!--  Grupos -->
+	<div class="span6">
+		<div class="widget">
+			<div class="widget-head">
+				<div class="pull-left">{% if perms.core.professor %}<h2>Atualizar Professor</h2> 
+        	{% else %} <h2>Atualizar Aluno</h2> {% endif %}</div>
+				<div class="widget-icons pull-right">
+					<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+
+			<div class="widget-content">
+				<div class="padd">
+				<form name='generic_form' action="" enctype="multipart/form-data" method="post"> {% csrf_token %}
+					{% for hidden in form.hidden_fields %} 	{{ hidden }} {% endfor %}
+					
+						{% for field in form.visible_fields %}
+							    {{ field.label_tag }}{% if field.is_required %}*{% endif %} <br/>
+								{{ field }} <br/>
+								{% if field.errors %}{{ field.errors }}{% endif %}
+								{{ field.help_text }}<br/>
+					    {% endfor %}
+				    <p>
+				        <input type="submit" value="Salvar" />
+				    </p>
+				</form>
+				</div>
+				<div class="clearfix"></div>
+				<hr />
+				
+			</div>
+			<div class="widget-foot">
+
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
 
 {% block content %}
 

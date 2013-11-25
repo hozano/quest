@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
 from django import forms
 from django.contrib.auth.models import User
-from quest.core.models import Aluno, Grupo
+from models import Aluno, Grupo
 from django.contrib.auth.forms import UserCreationForm
 
 class ProfessorForm(UserCreationForm):
@@ -52,6 +52,10 @@ class GrupoAddAlunosForm(forms.Form):
         self.fields["alunos_disponiveis"] = forms.MultipleChoiceField(
                                 choices=[('%d' % (aluno.id), "%s - %s" % (aluno.matricula, aluno)) for aluno in disponiveis])
 
+class ChangePasswordForm(forms.Form):
+    antigo = forms.CharField(widget=forms.PasswordInput(), label="Senha")
+    novo = forms.CharField(widget=forms.PasswordInput(), label="Nova Senha")
+    rep = forms.CharField(widget=forms.PasswordInput(), label="Nova Senha ")
     
 #class QuestaoForm(forms.ModelForm):
 #    enunciado = tinymce_models.HTMLField()

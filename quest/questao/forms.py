@@ -1,7 +1,6 @@
 # encoding:utf-8
 from django import forms
-from quest.questao.models import Questao, Questionario, Submissao
-from tinymce import models as tinymce_models
+from models import Questao, Questionario, Submissao
 import random
 
 
@@ -32,7 +31,7 @@ class QuestionarioForm(forms.ModelForm):
             raise forms.ValidationError("O formulario deve finalizar depois da data inicial.")
         
     def __init__(self, *args, **kwargs):
-        from quest.questao.models import get_questoes
+        from models import get_questoes
         super(QuestionarioForm,self).__init__(*args,**kwargs)
         self.fields['questoes'] = forms.MultipleChoiceField(choices=[('%s#%d' % (i.uid(), i.id), '%s (%s)' % (i.nome, i.get_tags_as_string()) ) for i in get_questoes()],widget=forms.CheckboxSelectMultiple)    
         

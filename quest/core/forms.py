@@ -57,6 +57,28 @@ class ChangePasswordForm(forms.Form):
     novo = forms.CharField(widget=forms.PasswordInput(), label="Nova Senha")
     rep = forms.CharField(widget=forms.PasswordInput(), label="Nova Senha ")
     
+    def __init__(self, user=None, *args, **kwargs):
+        super(ChangePasswordForm, self).__init__(*args, **kwargs)
+        self.user = user
+        print "ksdjfk kk"
+    
+    def clean_antigo(self):
+        print "VAlidando 1"
+        senha = self.cleaned_data["antigo"]
+        if not self.user.check_password(senha):
+            raise forms.ValidationError("Senha Invalida")
+        return senha
+    
+    def clean_rep(self):
+        print "Validando 2"
+        senha = self.cleaned_data["novo"]
+        rep = self.cleaned_data["rep"]
+        if not senha == rep:
+            raise forms.ValidationError("Senhas não Confere")
+        return senha
+        
+        
+    
 #class QuestaoForm(forms.ModelForm):
 #    enunciado = tinymce_models.HTMLField()
 #    tags = forms.CharField()

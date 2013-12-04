@@ -21,8 +21,9 @@
 					{% for hidden in form.hidden_fields %} 	{{ hidden }} {% endfor %}
 					
 						{% for field in form.visible_fields %}
-							    {{ field.label_tag }}{% if field.is_required %}*{% endif %} <br/>
-								{{ field }} <br/>
+						        {% if field.is_required %}*{% endif %}
+							    {{ field.label_tag }}<br/> 
+								{{ field }} <br/><br/>
 								{% if field.errors %}{{ field.errors }}{% endif %}
 								{{ field.help_text }}<br/>
 					    {% endfor %}

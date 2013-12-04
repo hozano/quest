@@ -8,7 +8,7 @@ from models import Professor, Aluno, Grupo
 from forms import ProfessorForm, AlunoForm, GrupoForm, GrupoAddAlunosForm, AlunosForm, ChangePasswordForm
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Permission, User
-from django.utils import simplejson
+#from django.utils import simplejson
 
 
 def index(request):
@@ -243,16 +243,15 @@ def adicionar_alunos_grupo(request, pk):
 
 @login_required
 def pass_change(request):
+    user = request.user
     if request.method == 'POST':
-        form = ChangePasswordForm(request.POST)
+        form = ChangePasswordForm(user, request.POST)
         if form.is_valid():
             with transaction.commit_on_success():
-                user = request.user
-                if(user.check_password(form.cleaned_data["antigo"]) and form.cleaned_data["novo"] == form.cleaned_data["rep"]):
-                    user.set_password(form.cleaned_data["novo"])
-                    user.save()
-                    return render_to_response ('private/mensagem_generica.html',{'link':'/home', 'msg':'Senha Alterada com sucesso!'},  context_instance=RequestContext(request))
+                user.set_password(form.cleaned_data["novo"])
+                user.save()
+                return render_to_response ('private/mensagem_generica.html',{'link':'/home', 'msg':'Senha Alterada com sucesso!'},  context_instance=RequestContext(request))
     else:
-        form = ChangePasswordForm()
+        form = ChangePasswordForm(user)
     return render_to_response("private/change_pwd.html", {'form': form}, context_instance=RequestContext(request))
 

@@ -34,6 +34,9 @@ class AlunoForm(UserCreationForm):
     
 class AlunosForm(forms.Form):
     arquivo = forms.FileField()
+    def __init__(self, *args, **kwargs):
+        super(AlunosForm, self).__init__(*args, **kwargs)
+        self.fields['grupos'] = forms.MultipleChoiceField(choices=[("%d" % grupo.id, "%s" % grupo.nome) for grupo in Grupo.objects.all()])
     
 class GrupoForm(forms.ModelForm):
     class Meta:

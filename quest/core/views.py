@@ -115,6 +115,13 @@ def get_alunos(request):
         print pk
         return HttpResponse('/aluno/detail/%d' %(pk))
 
+
+def addAlunos(aluno, grupos):
+    for grupoId in grupos:
+        grupo = Grupo.objects.get(pk=grupoId)
+        grupo.alunos.add(aluno)
+        grupo.save()
+
 # Criando através de um txt com o seguinte modelo
 # NúmeroQualquer Código Matrícula
 # 99 ALLYUN MLGCIO KORFMREIA 136294648
@@ -130,9 +137,7 @@ def handle_criar_alunos_file(f, grupos):
         try:
             cod, nome, matricula = line.split(",")
             first_name, last_name = nome.split(" ",1)
-            username = matricula
-            password = matricula
-
+            username = password = matricula
         except:
             result['erro'].append(('erro na linha '+str(count),'','','linha invalida'))
             continue
@@ -140,34 +145,26 @@ def handle_criar_alunos_file(f, grupos):
         query = Aluno.objects.filter(matricula = matricula)
         if len(query):
             result['erro'].append((username, matricula, "aluno com essa matricula já cadastrado"))
-            for grupoId in grupos:
-                grupo = Grupo.objects.get(pk=grupoId)
-                grupo.alunos.add(Aluno.objects.get(pk=query[0].id))
-                grupo.save()
+            addAlunos(query[0], grupos)
             continue
         
         query  = User.objects.filter(Q(username = username))
         if len(query):
             result['erro'].append((username, matricula, "aluno com esse usuário já cadastrado"))
             aluno = Aluno(matricula=matricula, user=query[0])
-            for grupoId in grupos:
-                grupo = Grupo.objects.get(pk=grupoId)
-                grupo.alunos.add(aluno)
-                grupo.save()
             aluno.save()
+            addAlunos(aluno, grupos)
             continue
         
         user = User.objects.create(first_name=first_name, last_name=last_name, username=username)
         user.set_password(password)
         user.save()
         aluno = Aluno(matricula=matricula, user=user)
-
-        for grupoId in grupos:
-            grupo = Grupo.objects.filter(pk=grupoId)
-            grupo.alunos.add(aluno)
-            grupo.alunos
-            grupo.save()
         aluno.save()
+        for grupoId in grupos:
+            grupo = Grupo.objects.get(pk=grupoId)
+            grupo.alunos.add(aluno)
+            grupo.save()
         result['cadastrados'].append(aluno)
     return result
 

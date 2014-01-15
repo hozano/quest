@@ -48,19 +48,14 @@
 				</div>
 				
 				<div class="modal-body">
-
-						<p>Escolha a disciplina ao qual desejas vincular os alunos</p>
-						{% for disciplina in professor.get_disciplinas%}
-						<p>
-							<input type="checkbox" name="disciplinas" value={{disciplina.id}}>{{disciplina.nome}}
-						</p>
-						{% endfor %} </br>
 						<p>
 							Em cada linha do arquivo deve conter as seguintes informações dos
 							alunos separadas por espaço em branco:</br> númeração, nome completo,
 							matricula. </br>
 							</br>
 						</p>
+						
+						<p>Escolha os Grupos ao qual desejas vincular os alunos</p>
 
 						{% for hidden in multiform.hidden_fields %} {{ hidden }} {% endfor %}
 

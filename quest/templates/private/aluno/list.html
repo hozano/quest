@@ -114,9 +114,8 @@
 						<div class="user">
 							<div class="user-pic">
 								<!-- User pic -->
-								<a href="#"><img
-									src="{{STATIC_URL}}macadmin/img/Icon-user.png"
-									alt="{{ aluno }}" /></a>
+								<a href="#"><img src="{{STATIC_URL}}macadmin/img/Icon-user.png"
+									alt="{{ aluno }}" width="60px" height="60px"/></a>
 							</div>
 
 							<div class="user-details">
@@ -126,8 +125,8 @@
 
 								<a href="/aluno/detail/{{aluno.id}}"
 									class="btn btn-info btn-mini"><i class="icon-user"></i> Ver
-									Perfil</a> <a href="mailto:{{aluno.email}}"
-									class="btn btn-mini"><i class="icon-envelope-alt"></i>
+									Perfil</a> <a href="mailto:{{aluno.user.email}}"
+									class="btn btn-sm btn-default"><i class="icon-envelope-alt"></i>
 									Enviar Mensagem</a>
 
 							</div>

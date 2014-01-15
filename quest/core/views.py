@@ -128,8 +128,7 @@ def handle_criar_alunos_file(f, grupos):
         if line.startswith("#") or not len(line):
             continue
         try:
-            cod, nome_matricula = line.split(" ",1)
-            nome, matricula = nome_matricula.rsplit(" ",1)
+            cod, nome, matricula = line.split(",")
             first_name, last_name = nome.split(" ",1)
             username = matricula
             password = matricula
@@ -144,8 +143,7 @@ def handle_criar_alunos_file(f, grupos):
             for grupoId in grupos:
                 grupo = Grupo.objects.get(pk=grupoId)
                 grupo.alunos.add(Aluno.objects.get(pk=query[0].id))
-                grupo.alunos
-            grupo.save()
+                grupo.save()
             continue
         
         query  = User.objects.filter(Q(username = username))
@@ -155,8 +153,7 @@ def handle_criar_alunos_file(f, grupos):
             for grupoId in grupos:
                 grupo = Grupo.objects.get(pk=grupoId)
                 grupo.alunos.add(aluno)
-                grupo.alunos
-            grupo.save()
+                grupo.save()
             aluno.save()
             continue
         
@@ -169,8 +166,7 @@ def handle_criar_alunos_file(f, grupos):
             grupo = Grupo.objects.filter(pk=grupoId)
             grupo.alunos.add(aluno)
             grupo.alunos
-        grupo.save()
-        
+            grupo.save()
         aluno.save()
         result['cadastrados'].append(aluno)
     return result
@@ -183,8 +179,9 @@ def criar_alunos(request):
             alunos = request.FILES['arquivo']      
             grupos = request.POST.getlist('grupos')
             result = handle_criar_alunos_file(alunos,grupos)
-            return render_to_response('private/aluno/resultado.html', {'cadastrados' : result['cadastrados'], 'erro':result['erro']},
-                              context_instance=RequestContext(request))
+            return HttpResponseRedirect("/aluno")
+            #return render_to_response('private/aluno/resultado.html', {'cadastrados' : result['cadastrados'], 'erro':result['erro']},
+                              #context_instance=RequestContext(request))
     return HttpResponseRedirect("/aluno")
 
 

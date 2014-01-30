@@ -56,7 +56,6 @@ def cadastro(request):
 
 @permission_required("core.professor", login_url="/home")
 def criar_professor(request):
-    print "criando professor"
     if request.method == 'POST':
         form = ProfessorForm(request.POST)
         if form.is_valid():
@@ -65,9 +64,10 @@ def criar_professor(request):
                 user.user_permissions.add(Permission.objects.get(codename = "professor"))
                 professor = Professor(user = user)
                 professor.save()
-                return HttpResponseRedirect('/professor')
-    print "redirecionando"
-    return HttpResponseRedirect('/professor')
+                return render_to_response ('private/mensagem_generica.html',{'link':'/aluno', 'msg':'Professor Cadastrado!'},  context_instance=RequestContext(request))
+    else:
+        form = ProfessorForm()
+    return render_to_response('private/professor/professor_form.html', {'form':form}, context_instance=RequestContext(request))
     
 @permission_required("core.professor", login_url="/home")
 def professor(request):
@@ -85,8 +85,10 @@ def criar_aluno(request):
                 user = form.save()
                 aluno = Aluno(matricula = form.cleaned_data['matricula'] ,user = user)
                 aluno.save()
-                return HttpResponseRedirect('/aluno')
-    return HttpResponseRedirect('/aluno')
+                return render_to_response ('private/mensagem_generica.html',{'link':'/aluno', 'msg':'Aluno Cadastrado!'},  context_instance=RequestContext(request))
+    else:
+        form = AlunoForm()
+    return render_to_response('private/aluno/aluno_form.html', {'form': form}, context_instance=RequestContext(request))
 
 def get_alunos(request):
     alunos = Aluno.objects.all()

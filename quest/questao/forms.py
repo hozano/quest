@@ -7,15 +7,16 @@ import random
 class QuestaoForm(forms.ModelForm):
     nivel_estatico = forms.ChoiceField(choices=[(i,i) for i in range(1,11)])
     tags = forms.CharField()
+    
     class Meta:
         model = Questao
         exclude = ['questionarios', 'criador', 'nivel_dinamico']
+        
     def __init__(self, *args, **kwargs):
         super(QuestaoForm, self).__init__(*args, **kwargs)
         self.fields['enunciado'] = forms.CharField(widget=forms.Textarea(attrs={'class':"cleditor", 'rows':7, 'cols':60}))
         
         
-
 class QuestionarioForm(forms.ModelForm):
     class Meta:
         model = Questionario

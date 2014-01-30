@@ -22,7 +22,7 @@
 						    {% if field.is_required %}*{% endif %}
 							{{ field }}
 							{{ field.help_text }}<br/>
-							{% if field.errors %}{{ field.errors }}{% endif %}
+							{% if field.errors %} <font color="red"> {{ field.errors }} </font>{% endif %}
 				    {% endfor %}
 				    
 				    <p>

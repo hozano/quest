@@ -22,7 +22,7 @@
 
 						{% for field in form.visible_fields %} {{ field.label_tag }}
 						{% if field.is_required %}*{% endif %} <br/> {{ field }} <br/> 
-						{% if field.errors %}{{ field.errors }}{% endif %} {{ field.help_text }}<br/>
+						{% if field.errors %} <font color="red"> {{ field.errors }} </font>{% endif %} {{ field.help_text }}<br/>
 						{% endfor %}
 					</div>
 

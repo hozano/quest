@@ -151,7 +151,9 @@
 
 				</div>
 				<div class="widget-foot">
+				{% if perms.core.professor %}
 					<a href="#cadastro" data-toggle="modal" class="btn btn-primary"> <i class="icon-plus-sign"></i> Adiconar Alunos </a>
+				{% endif %}
 				</div>
 			</div>
 		</div>

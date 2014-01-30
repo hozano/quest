@@ -35,7 +35,7 @@
 
 					{% if perms.core.professor %} <br>
 					<p>Resposta esperada:</p>
-					<p><i>{{ resposta.questao.get_resposta|safe }}</i></p>
+					<p><i><b>{{ resposta.questao.get_resposta|safe }}</b></i></p>
 					{% endif %} 
 					<br> 
 					{% endfor %}

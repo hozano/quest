@@ -70,6 +70,8 @@
 				<a href="#edit" data-toggle="modal" class="btn btn-primary"> Modificar </a>
 				<a href="/questao/deletar/{{questao.uid}}/{{questao.id}}" class="btn btn-danger"> Excluir </a>
 			{% endif %}
+			{% block extra-qfoot %}
+			{% endblock %}
 		</div>
 	</div>
 </div>

@@ -24,7 +24,7 @@
 						        {% if field.is_required %}*{% endif %}
 							    {{ field.label_tag }}<br/> 
 								{{ field }} <br/><br/>
-								{% if field.errors %}{{ field.errors }}{% endif %}
+								{% if field.errors %} <font color="red"> {{ field.errors }} </font>{% endif %}
 								{{ field.help_text }}<br/>
 					    {% endfor %}
 				    <p>

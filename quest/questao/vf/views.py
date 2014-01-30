@@ -12,20 +12,18 @@ def criar_questao(request):
         form = QuestaoVFForm(request.POST)
         formset = AlternativaVFFormSet(request.POST)
         if form.is_valid() and formset.is_valid():
-            with transaction.commit_on_success():
-                questao = form.save(commit=False)
-                questao.criador = request.user
-                questao.save()
-                questao.tags = form.cleaned_data['tags']
-                for form_dict in formset.cleaned_data:
-                    if form_dict:
-                        alternativa = AlternativaVFQuestao()
-                        alternativa.questao = questao
-                        alternativa.alternativa = form_dict['alternativa']
-                        alternativa.valor = form_dict['valor']
-                        alternativa.save()
-                return HttpResponseRedirect('/questoes')
-            return HttpResponse('Deu Erro.')
+            questao = form.save(commit=False)
+            questao.criador = request.user
+            questao.save()
+            questao.tags = form.cleaned_data['tags']
+            for form_dict in formset.cleaned_data:
+                if form_dict:
+                    alternativa = AlternativaVFQuestao()
+                    alternativa.questao = questao
+                    alternativa.alternativa = form_dict['alternativa']
+                    alternativa.valor = form_dict['valor']
+                    alternativa.save()
+            return HttpResponseRedirect('/questoes')
     else:
         form = QuestaoVFForm()
         formset = AlternativaVFFormSet()

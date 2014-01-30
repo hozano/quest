@@ -47,6 +47,7 @@ urlpatterns = patterns('',
     (r'^questao/detail/(?P<uid>[a-zA-Z_]\w*)/(?P<pk>\d+)/$', 'questao.views.show_questao'),
     (r'^questao/deletar/(?P<uid>[a-zA-Z_]\w*)/(?P<pk>\d+)$', 'questao.views.remover_questao'),
     (r'^questao/modificar/(?P<uid>[a-zA-Z_]\w*)/(?P<pk>\d+)$', 'questao.views.atualizar_questao'),
+    (r'^questao/composta/(?P<pk>\d+)/add$', 'questao.composta.views.add_questao'),
     
     (r'^questionarios$', 'questao.views.questionarios'),
     (r'^questionario/create$', 'questao.views.criar_questionario'),
@@ -72,4 +73,3 @@ urlpatterns = patterns('',
 urlpatterns += staticfiles_urlpatterns()
 
 #urlpatterns += create_crud_urls_from_models([Questao,])
-
